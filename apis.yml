@@ -1,0 +1,19 @@
+aid: meditech
+url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/apis.yml
+apis:
+- aid: meditech:meditech-api
+  name: Meditech EHR API
+  tags:
+  - Healthcare
+  - EHR
+  - HL7
+  - Lab
+  - Pharmacy
+  image: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/image.png
+  humanURL: https://www.meditech.com/
+  baseURL: https://api.meditech.example.com
+  properties:
+  - url: https://www.meditech.com/
+    type: Documentation
+  description: >-
+    Meditech provides electronic health record (EHR) APIs for community hospitals and healthcare organizations. APIs enable access to patient records, lab results, pharmacy orders, radiology reports, and ADT (Admit/Discharge/Transfer) events via HL7 and REST interfaces.
