@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json",
+  "title": "Meditech FHIR R4 Patient",
+  "description": "FHIR R4 Patient resource as implemented by Meditech Expanse (US Core Patient Profile)",
+  "type": "object",
+  "required": ["resourceType", "id"],
+  "properties": {
+    "resourceType": {
+      "type": "string",
+      "const": "Patient"
+    },
+    "id": {
+      "type": "string",
+      "description": "FHIR logical ID"
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "versionId": { "type": "string" },
+        "lastUpdated": { "type": "string", "format": "date-time" },
+        "profile": {
+          "type": "array",
+          "items": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "identifier": {
+      "type": "array",
+      "description": "Patient identifiers (MRN, SSN, etc.)",
+      "items": {
+        "$ref": "#/$defs/Identifier"
+      }
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "name": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/HumanName"
+      }
+    },
+    "telecom": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ContactPoint"
+      }
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["male", "female", "other", "unknown"]
+    },
+    "birthDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "deceasedBoolean": {
+      "type": "boolean"
+    },
+    "deceasedDateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "address": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Address"
+      }
+    },
+    "maritalStatus": {
+      "$ref": "#/$defs/CodeableConcept"
+    },
+    "communication": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["language"],
+        "properties": {
+          "language": { "$ref": "#/$defs/CodeableConcept" },
+          "preferred": { "type": "boolean" }
+        }
+      }
+    },
+    "generalPractitioner": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Reference" }
+    },
+    "managingOrganization": {
+      "$ref": "#/$defs/Reference"
+    }
+  },
+  "$defs": {
+    "Identifier": {
+      "type": "object",
+      "properties": {
+        "use": {
+          "type": "string",
+          "enum": ["usual", "official", "temp", "secondary", "old"]
+        },
+        "type": { "$ref": "#/$defs/CodeableConcept" },
+        "system": { "type": "string", "format": "uri" },
+        "value": { "type": "string" }
+      }
+    },
+    "HumanName": {
+      "type": "object",
+      "properties": {
+        "use": {
+          "type": "string",
+          "enum": ["usual", "official", "temp", "nickname", "anonymous", "old", "maiden"]
+        },
+        "family": { "type": "string" },
+        "given": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "prefix": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "suffix": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "ContactPoint": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "string",
+          "enum": ["phone", "fax", "email", "pager", "url", "sms", "other"]
+        },
+        "value": { "type": "string" },
+        "use": {
+          "type": "string",
+          "enum": ["home", "work", "temp", "old", "mobile"]
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "use": {
+          "type": "string",
+          "enum": ["home", "work", "temp", "old", "billing"]
+        },
+        "type": {
+          "type": "string",
+          "enum": ["postal", "physical", "both"]
+        },
+        "line": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "city": { "type": "string" },
+        "district": { "type": "string" },
+        "state": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "country": { "type": "string" }
+      }
+    },
+    "CodeableConcept": {
+      "type": "object",
+      "properties": {
+        "coding": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "system": { "type": "string", "format": "uri" },
+              "version": { "type": "string" },
+              "code": { "type": "string" },
+              "display": { "type": "string" }
+            }
+          }
+        },
+        "text": { "type": "string" }
+      }
+    },
+    "Reference": {
+      "type": "object",
+      "properties": {
+        "reference": { "type": "string" },
+        "type": { "type": "string" },
+        "display": { "type": "string" }
+      }
+    }
+  }
+}

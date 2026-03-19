@@ -1,0 +1,553 @@
+openapi: 3.1.0
+info:
+  title: Meditech Expanse FHIR R4 API
+  description: >-
+    Meditech Expanse FHIR API enables standards-based interoperability for
+    sharing patient data across healthcare systems. Supports TEFCA-aligned
+    data exchange through the Traverse Exchange national network, connecting
+    over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.
+  version: 4.0.0
+  contact:
+    name: Meditech Support
+    url: https://ehr.meditech.com/contact
+  license:
+    name: Proprietary
+    url: https://ehr.meditech.com/privacy-policy
+externalDocs:
+  description: Meditech Interoperability Documentation
+  url: https://ehr.meditech.com/ehr-solutions/meditech-interoperability
+servers:
+  - url: https://{facility}.meditech.com/fhir/r4
+    variables:
+      facility:
+        default: yourhospital
+        description: Your Meditech facility subdomain
+security:
+  - SMART_OAuth2: [patient/*.read, user/*.read, launch]
+paths:
+  /metadata:
+    get:
+      operationId: getCapabilityStatement
+      summary: Get FHIR Capability Statement
+      description: >-
+        Returns the server's CapabilityStatement resource describing supported
+        FHIR resources, interactions, and extensions.
+      tags:
+        - Capability
+      security: []
+      responses:
+        '200':
+          description: FHIR CapabilityStatement
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/CapabilityStatement'
+  /Patient:
+    get:
+      operationId: searchPatients
+      summary: Search patients
+      description: >-
+        Search for patient records using FHIR search parameters including name,
+        birthdate, identifier, and gender. Implements US Core Patient profile.
+      tags:
+        - Patient
+      parameters:
+        - name: identifier
+          in: query
+          schema:
+            type: string
+          description: MRN or other identifier (e.g., identifier=MR|12345)
+        - name: family
+          in: query
+          schema:
+            type: string
+        - name: given
+          in: query
+          schema:
+            type: string
+        - name: birthdate
+          in: query
+          schema:
+            type: string
+          description: FHIR date parameter (e.g., birthdate=1980-01-01)
+        - name: gender
+          in: query
+          schema:
+            type: string
+            enum: [male, female, other, unknown]
+        - name: _count
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 200
+        - name: _format
+          in: query
+          schema:
+            type: string
+            enum: [json, xml]
+            default: json
+      responses:
+        '200':
+          description: Bundle of matching Patient resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /Patient/{id}:
+    get:
+      operationId: getPatient
+      summary: Get patient by ID
+      description: Retrieve a specific patient resource by FHIR logical ID.
+      tags:
+        - Patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Patient resource
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /Patient/{id}/Observation:
+    get:
+      operationId: getPatientObservations
+      summary: Get patient observations (vital signs, lab results)
+      description: >-
+        Retrieve clinical observations for a patient including vital signs,
+        laboratory results, and other measurements.
+      tags:
+        - Observation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter by category (vital-signs, laboratory, imaging, etc.)
+        - name: code
+          in: query
+          schema:
+            type: string
+          description: LOINC code filter
+        - name: date
+          in: query
+          schema:
+            type: string
+          description: Date range (e.g., date=ge2024-01-01&date=le2024-12-31)
+        - name: _count
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Bundle of Observation resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+  /Patient/{id}/Condition:
+    get:
+      operationId: getPatientConditions
+      summary: Get patient conditions (problem list, diagnoses)
+      description: >-
+        Retrieve active and historical conditions for a patient,
+        including problem list entries and encounter diagnoses.
+      tags:
+        - Condition
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clinical-status
+          in: query
+          schema:
+            type: string
+            enum: [active, recurrence, relapse, inactive, remission, resolved]
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: problem-list-item or encounter-diagnosis
+      responses:
+        '200':
+          description: Bundle of Condition resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+  /Patient/{id}/MedicationRequest:
+    get:
+      operationId: getPatientMedications
+      summary: Get patient medication requests
+      description: Retrieve current and historical medication requests (prescriptions) for a patient.
+      tags:
+        - Medication
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, completed, cancelled, entered-in-error, stopped, on-hold]
+        - name: intent
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bundle of MedicationRequest resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+  /Patient/{id}/AllergyIntolerance:
+    get:
+      operationId: getPatientAllergies
+      summary: Get patient allergies and intolerances
+      description: Retrieve allergy and intolerance records for a patient.
+      tags:
+        - Allergy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clinical-status
+          in: query
+          schema:
+            type: string
+            enum: [active, inactive, resolved]
+      responses:
+        '200':
+          description: Bundle of AllergyIntolerance resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+  /Patient/{id}/Encounter:
+    get:
+      operationId: getPatientEncounters
+      summary: Get patient encounters
+      description: Retrieve clinical encounters (visits, admissions) for a patient.
+      tags:
+        - Encounter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [planned, arrived, triaged, in-progress, onleave, finished, cancelled]
+        - name: date
+          in: query
+          schema:
+            type: string
+        - name: _count
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Bundle of Encounter resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+  /Patient/{id}/DiagnosticReport:
+    get:
+      operationId: getPatientDiagnosticReports
+      summary: Get patient diagnostic reports
+      description: >-
+        Retrieve diagnostic reports (lab reports, radiology reports, pathology)
+        for a patient.
+      tags:
+        - Diagnostic
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: LAB, RAD, etc.
+        - name: date
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bundle of DiagnosticReport resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+  /Patient/{id}/$everything:
+    get:
+      operationId: getPatientEverything
+      summary: Get all patient data (Patient $everything)
+      description: >-
+        Returns all resources related to a patient in a single Bundle.
+        Implements the FHIR $everything operation for bulk patient data access.
+      tags:
+        - Patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: end
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Bundle containing all patient-linked resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+components:
+  securitySchemes:
+    SMART_OAuth2:
+      type: oauth2
+      description: SMART on FHIR OAuth 2.0 authorization
+      flows:
+        authorizationCode:
+          authorizationUrl: https://yourhospital.meditech.com/oauth/authorize
+          tokenUrl: https://yourhospital.meditech.com/oauth/token
+          scopes:
+            'patient/*.read': Read access to all patient-owned resources
+            'user/*.read': Practitioner read access to all resources
+            launch: EHR launch context
+            openid: OpenID Connect identity
+            fhirUser: FHIR user claim
+  responses:
+    Unauthorized:
+      description: SMART on FHIR authorization required
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+    NotFound:
+      description: Resource not found
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+  schemas:
+    Bundle:
+      type: object
+      description: FHIR Bundle resource
+      properties:
+        resourceType:
+          type: string
+          enum: [Bundle]
+        id:
+          type: string
+        type:
+          type: string
+          enum: [searchset, collection, transaction, batch, history]
+        total:
+          type: integer
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation: { type: string }
+              url: { type: string }
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl: { type: string }
+              resource:
+                type: object
+                additionalProperties: true
+    Patient:
+      type: object
+      description: FHIR R4 Patient resource (US Core Patient Profile)
+      properties:
+        resourceType:
+          type: string
+          enum: [Patient]
+        id:
+          type: string
+        meta:
+          type: object
+          properties:
+            versionId: { type: string }
+            lastUpdated: { type: string, format: date-time }
+            profile:
+              type: array
+              items: { type: string }
+        identifier:
+          type: array
+          items:
+            type: object
+            properties:
+              use: { type: string }
+              type:
+                type: object
+                properties:
+                  coding:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        system: { type: string }
+                        code: { type: string }
+              system: { type: string }
+              value: { type: string }
+        active:
+          type: boolean
+        name:
+          type: array
+          items:
+            type: object
+            properties:
+              use: { type: string, enum: [official, usual, nickname, anonymous] }
+              family: { type: string }
+              given:
+                type: array
+                items: { type: string }
+        telecom:
+          type: array
+          items:
+            type: object
+            properties:
+              system: { type: string, enum: [phone, fax, email, pager, url, sms] }
+              value: { type: string }
+              use: { type: string, enum: [home, work, temp, old, mobile] }
+        gender:
+          type: string
+          enum: [male, female, other, unknown]
+        birthDate:
+          type: string
+          format: date
+        deceasedBoolean:
+          type: boolean
+        deceasedDateTime:
+          type: string
+          format: date-time
+        address:
+          type: array
+          items:
+            type: object
+            properties:
+              use: { type: string }
+              line:
+                type: array
+                items: { type: string }
+              city: { type: string }
+              state: { type: string }
+              postalCode: { type: string }
+              country: { type: string }
+        communication:
+          type: array
+          items:
+            type: object
+            properties:
+              language:
+                type: object
+                properties:
+                  coding:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        system: { type: string }
+                        code: { type: string }
+    CapabilityStatement:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum: [CapabilityStatement]
+        status:
+          type: string
+        date:
+          type: string
+          format: date-time
+        fhirVersion:
+          type: string
+        format:
+          type: array
+          items: { type: string }
+        rest:
+          type: array
+          items:
+            type: object
+    OperationOutcome:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum: [OperationOutcome]
+        issue:
+          type: array
+          items:
+            type: object
+            properties:
+              severity:
+                type: string
+                enum: [fatal, error, warning, information]
+              code:
+                type: string
+              diagnostics:
+                type: string
+tags:
+  - name: Capability
+    description: FHIR server capability
+  - name: Patient
+    description: US Core Patient resources
+  - name: Observation
+    description: Vital signs and laboratory results
+  - name: Condition
+    description: Problem list and diagnoses
+  - name: Medication
+    description: Medication requests and prescriptions
+  - name: Allergy
+    description: Allergy and intolerance records
+  - name: Encounter
+    description: Clinical encounters and visits
+  - name: Diagnostic
+    description: Diagnostic reports (lab, radiology, pathology)

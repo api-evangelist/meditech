@@ -1,0 +1,49 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "fhir": "http://hl7.org/fhir/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Patient": "schema:Patient",
+    "id": "schema:identifier",
+    "active": {
+      "@id": "schema:activeStatus",
+      "@type": "xsd:boolean"
+    },
+    "name": "schema:name",
+    "family": "schema:familyName",
+    "given": "schema:givenName",
+    "gender": "schema:gender",
+    "birthDate": {
+      "@id": "schema:birthDate",
+      "@type": "xsd:date"
+    },
+    "deceasedDateTime": {
+      "@id": "schema:deathDate",
+      "@type": "xsd:dateTime"
+    },
+    "address": "schema:address",
+    "telecom": "schema:contactPoint",
+    "value": "schema:value",
+    "identifier": "schema:identifier",
+    "Observation": "schema:Observation",
+    "Condition": "schema:MedicalCondition",
+    "MedicationRequest": "schema:Drug",
+    "AllergyIntolerance": "schema:allergyOrIntolerance",
+    "Encounter": "schema:MedicalVisit",
+    "DiagnosticReport": "schema:MedicalTest",
+    "generalPractitioner": {
+      "@id": "schema:doctor",
+      "@type": "@id"
+    },
+    "managingOrganization": {
+      "@id": "schema:memberOf",
+      "@type": "@id"
+    },
+    "lastUpdated": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    }
+  }
+}
