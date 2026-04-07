@@ -391,14 +391,14 @@ components:
           items:
             type: object
             properties:
-              relation: { type: string }
-              url: { type: string }
+              relation: {type: string}
+              url: {type: string}
         entry:
           type: array
           items:
             type: object
             properties:
-              fullUrl: { type: string }
+              fullUrl: {type: string}
               resource:
                 type: object
                 additionalProperties: true
@@ -414,17 +414,17 @@ components:
         meta:
           type: object
           properties:
-            versionId: { type: string }
-            lastUpdated: { type: string, format: date-time }
+            versionId: {type: string}
+            lastUpdated: {type: string, format: date-time}
             profile:
               type: array
-              items: { type: string }
+              items: {type: string}
         identifier:
           type: array
           items:
             type: object
             properties:
-              use: { type: string }
+              use: {type: string}
               type:
                 type: object
                 properties:
@@ -433,10 +433,10 @@ components:
                     items:
                       type: object
                       properties:
-                        system: { type: string }
-                        code: { type: string }
-              system: { type: string }
-              value: { type: string }
+                        system: {type: string}
+                        code: {type: string}
+              system: {type: string}
+              value: {type: string}
         active:
           type: boolean
         name:
@@ -444,19 +444,19 @@ components:
           items:
             type: object
             properties:
-              use: { type: string, enum: [official, usual, nickname, anonymous] }
-              family: { type: string }
+              use: {type: string, enum: [official, usual, nickname, anonymous]}
+              family: {type: string}
               given:
                 type: array
-                items: { type: string }
+                items: {type: string}
         telecom:
           type: array
           items:
             type: object
             properties:
-              system: { type: string, enum: [phone, fax, email, pager, url, sms] }
-              value: { type: string }
-              use: { type: string, enum: [home, work, temp, old, mobile] }
+              system: {type: string, enum: [phone, fax, email, pager, url, sms]}
+              value: {type: string}
+              use: {type: string, enum: [home, work, temp, old, mobile]}
         gender:
           type: string
           enum: [male, female, other, unknown]
@@ -473,14 +473,14 @@ components:
           items:
             type: object
             properties:
-              use: { type: string }
+              use: {type: string}
               line:
                 type: array
-                items: { type: string }
-              city: { type: string }
-              state: { type: string }
-              postalCode: { type: string }
-              country: { type: string }
+                items: {type: string}
+              city: {type: string}
+              state: {type: string}
+              postalCode: {type: string}
+              country: {type: string}
         communication:
           type: array
           items:
@@ -494,8 +494,8 @@ components:
                     items:
                       type: object
                       properties:
-                        system: { type: string }
-                        code: { type: string }
+                        system: {type: string}
+                        code: {type: string}
     CapabilityStatement:
       type: object
       properties:
@@ -511,7 +511,7 @@ components:
           type: string
         format:
           type: array
-          items: { type: string }
+          items: {type: string}
         rest:
           type: array
           items:
@@ -535,19 +535,19 @@ components:
               diagnostics:
                 type: string
 tags:
-  - name: Capability
-    description: FHIR server capability
-  - name: Patient
-    description: US Core Patient resources
-  - name: Observation
-    description: Vital signs and laboratory results
-  - name: Condition
-    description: Problem list and diagnoses
-  - name: Medication
-    description: Medication requests and prescriptions
   - name: Allergy
     description: Allergy and intolerance records
-  - name: Encounter
-    description: Clinical encounters and visits
+  - name: Capability
+    description: FHIR server capability
+  - name: Condition
+    description: Problem list and diagnoses
   - name: Diagnostic
     description: Diagnostic reports (lab, radiology, pathology)
+  - name: Encounter
+    description: Clinical encounters and visits
+  - name: Medication
+    description: Medication requests and prescriptions
+  - name: Observation
+    description: Vital signs and laboratory results
+  - name: Patient
+    description: US Core Patient resources
