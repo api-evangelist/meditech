@@ -1,0 +1,630 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Meditech Expanse FHIR R4 API
+  description: Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare
+    systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities
+    across 41 US states. Built on HL7 FHIR R4 standards.
+  tags:
+  - Meditech
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: meditech
+    baseUri: https://yourhospital.meditech.com/fhir/r4
+    description: Meditech Expanse FHIR R4 API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{MEDITECH_TOKEN}}'
+    resources:
+    - name: metadata
+      path: /metadata
+      operations:
+      - name: getcapabilitystatement
+        method: GET
+        description: Get FHIR Capability Statement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient
+      path: /Patient
+      operations:
+      - name: searchpatients
+        method: GET
+        description: Search patients
+        inputParameters:
+        - name: identifier
+          in: query
+          type: string
+          description: MRN or other identifier (e.g., identifier=MR|12345)
+        - name: family
+          in: query
+          type: string
+        - name: given
+          in: query
+          type: string
+        - name: birthdate
+          in: query
+          type: string
+          description: FHIR date parameter (e.g., birthdate=1980-01-01)
+        - name: gender
+          in: query
+          type: string
+        - name: _count
+          in: query
+          type: integer
+        - name: _format
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id
+      path: /Patient/{id}
+      operations:
+      - name: getpatient
+        method: GET
+        description: Get patient by ID
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-observation
+      path: /Patient/{id}/Observation
+      operations:
+      - name: getpatientobservations
+        method: GET
+        description: Get patient observations (vital signs, lab results)
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: category
+          in: query
+          type: string
+          description: Filter by category (vital-signs, laboratory, imaging, etc.)
+        - name: code
+          in: query
+          type: string
+          description: LOINC code filter
+        - name: date
+          in: query
+          type: string
+          description: Date range (e.g., date=ge2024-01-01&date=le2024-12-31)
+        - name: _count
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-condition
+      path: /Patient/{id}/Condition
+      operations:
+      - name: getpatientconditions
+        method: GET
+        description: Get patient conditions (problem list, diagnoses)
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: clinical-status
+          in: query
+          type: string
+        - name: category
+          in: query
+          type: string
+          description: problem-list-item or encounter-diagnosis
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-medicationrequest
+      path: /Patient/{id}/MedicationRequest
+      operations:
+      - name: getpatientmedications
+        method: GET
+        description: Get patient medication requests
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: status
+          in: query
+          type: string
+        - name: intent
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-allergyintolerance
+      path: /Patient/{id}/AllergyIntolerance
+      operations:
+      - name: getpatientallergies
+        method: GET
+        description: Get patient allergies and intolerances
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: clinical-status
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-encounter
+      path: /Patient/{id}/Encounter
+      operations:
+      - name: getpatientencounters
+        method: GET
+        description: Get patient encounters
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: status
+          in: query
+          type: string
+        - name: date
+          in: query
+          type: string
+        - name: _count
+          in: query
+          type: integer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-diagnosticreport
+      path: /Patient/{id}/DiagnosticReport
+      operations:
+      - name: getpatientdiagnosticreports
+        method: GET
+        description: Get patient diagnostic reports
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: category
+          in: query
+          type: string
+          description: LAB, RAD, etc.
+        - name: date
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: patient-id-everything
+      path: /Patient/{id}/$everything
+      operations:
+      - name: getpatienteverything
+        method: GET
+        description: Get all patient data (Patient $everything)
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: start
+          in: query
+          type: string
+        - name: end
+          in: query
+          type: string
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: meditech-rest
+    description: REST adapter for Meditech Expanse FHIR R4 API.
+    resources:
+    - path: /metadata
+      name: getcapabilitystatement
+      operations:
+      - method: GET
+        name: getcapabilitystatement
+        description: Get FHIR Capability Statement
+        call: meditech.getcapabilitystatement
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient
+      name: searchpatients
+      operations:
+      - method: GET
+        name: searchpatients
+        description: Search patients
+        call: meditech.searchpatients
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}
+      name: getpatient
+      operations:
+      - method: GET
+        name: getpatient
+        description: Get patient by ID
+        call: meditech.getpatient
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/Observation
+      name: getpatientobservations
+      operations:
+      - method: GET
+        name: getpatientobservations
+        description: Get patient observations (vital signs, lab results)
+        call: meditech.getpatientobservations
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/Condition
+      name: getpatientconditions
+      operations:
+      - method: GET
+        name: getpatientconditions
+        description: Get patient conditions (problem list, diagnoses)
+        call: meditech.getpatientconditions
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/MedicationRequest
+      name: getpatientmedications
+      operations:
+      - method: GET
+        name: getpatientmedications
+        description: Get patient medication requests
+        call: meditech.getpatientmedications
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/AllergyIntolerance
+      name: getpatientallergies
+      operations:
+      - method: GET
+        name: getpatientallergies
+        description: Get patient allergies and intolerances
+        call: meditech.getpatientallergies
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/Encounter
+      name: getpatientencounters
+      operations:
+      - method: GET
+        name: getpatientencounters
+        description: Get patient encounters
+        call: meditech.getpatientencounters
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/DiagnosticReport
+      name: getpatientdiagnosticreports
+      operations:
+      - method: GET
+        name: getpatientdiagnosticreports
+        description: Get patient diagnostic reports
+        call: meditech.getpatientdiagnosticreports
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /Patient/{id}/$everything
+      name: getpatienteverything
+      operations:
+      - method: GET
+        name: getpatienteverything
+        description: Get all patient data (Patient $everything)
+        call: meditech.getpatienteverything
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: meditech-mcp
+    transport: http
+    description: MCP adapter for Meditech Expanse FHIR R4 API for AI agent use.
+    tools:
+    - name: getcapabilitystatement
+      description: Get FHIR Capability Statement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getcapabilitystatement
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: searchpatients
+      description: Search patients
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.searchpatients
+      with:
+        identifier: tools.identifier
+        family: tools.family
+        given: tools.given
+        birthdate: tools.birthdate
+        gender: tools.gender
+        _count: tools._count
+        _format: tools._format
+      inputParameters:
+      - name: identifier
+        type: string
+        description: MRN or other identifier (e.g., identifier=MR|12345)
+      - name: family
+        type: string
+        description: family
+      - name: given
+        type: string
+        description: given
+      - name: birthdate
+        type: string
+        description: FHIR date parameter (e.g., birthdate=1980-01-01)
+      - name: gender
+        type: string
+        description: gender
+      - name: _count
+        type: integer
+        description: _count
+      - name: _format
+        type: string
+        description: _format
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatient
+      description: Get patient by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatient
+      with:
+        id: tools.id
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatientobservations
+      description: Get patient observations (vital signs, lab results)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatientobservations
+      with:
+        id: tools.id
+        category: tools.category
+        code: tools.code
+        date: tools.date
+        _count: tools._count
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: category
+        type: string
+        description: Filter by category (vital-signs, laboratory, imaging, etc.)
+      - name: code
+        type: string
+        description: LOINC code filter
+      - name: date
+        type: string
+        description: Date range (e.g., date=ge2024-01-01&date=le2024-12-31)
+      - name: _count
+        type: integer
+        description: _count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatientconditions
+      description: Get patient conditions (problem list, diagnoses)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatientconditions
+      with:
+        id: tools.id
+        clinical-status: tools.clinical-status
+        category: tools.category
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: clinical-status
+        type: string
+        description: clinical-status
+      - name: category
+        type: string
+        description: problem-list-item or encounter-diagnosis
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatientmedications
+      description: Get patient medication requests
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatientmedications
+      with:
+        id: tools.id
+        status: tools.status
+        intent: tools.intent
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: status
+        type: string
+        description: status
+      - name: intent
+        type: string
+        description: intent
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatientallergies
+      description: Get patient allergies and intolerances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatientallergies
+      with:
+        id: tools.id
+        clinical-status: tools.clinical-status
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: clinical-status
+        type: string
+        description: clinical-status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatientencounters
+      description: Get patient encounters
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatientencounters
+      with:
+        id: tools.id
+        status: tools.status
+        date: tools.date
+        _count: tools._count
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: status
+        type: string
+        description: status
+      - name: date
+        type: string
+        description: date
+      - name: _count
+        type: integer
+        description: _count
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatientdiagnosticreports
+      description: Get patient diagnostic reports
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatientdiagnosticreports
+      with:
+        id: tools.id
+        category: tools.category
+        date: tools.date
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: category
+        type: string
+        description: LAB, RAD, etc.
+      - name: date
+        type: string
+        description: date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpatienteverything
+      description: Get all patient data (Patient $everything)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: meditech.getpatienteverything
+      with:
+        id: tools.id
+        start: tools.start
+        end: tools.end
+      inputParameters:
+      - name: id
+        type: string
+        description: id
+        required: true
+      - name: start
+        type: string
+        description: start
+      - name: end
+        type: string
+        description: end
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    MEDITECH_TOKEN: MEDITECH_TOKEN
