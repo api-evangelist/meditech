@@ -1,0 +1,84 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Meditech Expanse FHIR R4 API — Allergy
+  description: 'Meditech Expanse FHIR R4 API — Allergy. 1 operations. Lead operation: Get patient allergies and intolerances.
+    Self-contained Naftiko capability covering one Meditech business surface.'
+  tags:
+  - Meditech
+  - Allergy
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MEDITECH_API_KEY: MEDITECH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: fhir-allergy
+    baseUri: https://{facility}.meditech.com/fhir/r4
+    description: Meditech Expanse FHIR R4 API — Allergy business capability. Self-contained, no shared references.
+    resources:
+    - name: Patient-id-AllergyIntolerance
+      path: /Patient/{id}/AllergyIntolerance
+      operations:
+      - name: getpatientallergies
+        method: GET
+        description: Get patient allergies and intolerances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: clinical-status
+          in: query
+          type: string
+    authentication:
+      type: bearer
+      token: '{{env.MEDITECH_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: fhir-allergy-rest
+    port: 8080
+    description: REST adapter for Meditech Expanse FHIR R4 API — Allergy. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/patient/{id}/allergyintolerance
+      name: patient-id-allergyintolerance
+      description: REST surface for Patient-id-AllergyIntolerance.
+      operations:
+      - method: GET
+        name: getpatientallergies
+        description: Get patient allergies and intolerances
+        call: fhir-allergy.getpatientallergies
+        with:
+          id: rest.id
+          clinical-status: rest.clinical-status
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: fhir-allergy-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Meditech Expanse FHIR R4 API — Allergy. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: get-patient-allergies-and-intolerances
+      description: Get patient allergies and intolerances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: fhir-allergy.getpatientallergies
+      with:
+        id: tools.id
+        clinical-status: tools.clinical-status
+      outputParameters:
+      - type: object
+        mapping: $.

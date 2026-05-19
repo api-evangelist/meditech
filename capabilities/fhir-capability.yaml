@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Meditech Expanse FHIR R4 API — Capability
+  description: 'Meditech Expanse FHIR R4 API — Capability. 1 operations. Lead operation: Get FHIR Capability Statement. Self-contained
+    Naftiko capability covering one Meditech business surface.'
+  tags:
+  - Meditech
+  - Capability
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MEDITECH_API_KEY: MEDITECH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: fhir-capability
+    baseUri: https://{facility}.meditech.com/fhir/r4
+    description: Meditech Expanse FHIR R4 API — Capability business capability. Self-contained, no shared references.
+    resources:
+    - name: metadata
+      path: /metadata
+      operations:
+      - name: getcapabilitystatement
+        method: GET
+        description: Get FHIR Capability Statement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MEDITECH_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: fhir-capability-rest
+    port: 8080
+    description: REST adapter for Meditech Expanse FHIR R4 API — Capability. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/metadata
+      name: metadata
+      description: REST surface for metadata.
+      operations:
+      - method: GET
+        name: getcapabilitystatement
+        description: Get FHIR Capability Statement
+        call: fhir-capability.getcapabilitystatement
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: fhir-capability-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Meditech Expanse FHIR R4 API — Capability. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: get-fhir-capability-statement
+      description: Get FHIR Capability Statement
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: fhir-capability.getcapabilitystatement
+      outputParameters:
+      - type: object
+        mapping: $.
