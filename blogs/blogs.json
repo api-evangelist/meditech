@@ -2,13 +2,20 @@
   "repo": "meditech",
   "feeds": [
     {
-      "source": "https://blog.meditech.com/",
+      "source": "https://blog.meditech.com/atom.xml",
       "feed_url": "https://blog.meditech.com/atom.xml",
-      "title": "MEDITECH Blog",
+      "title": "",
       "saved": 0,
-      "last_error": "http_404"
+      "method": "feed"
+    },
+    {
+      "source": "https://blog.meditech.com/",
+      "feed_url": "https://blog.meditech.com/rss.xml",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
     }
   ],
-  "post_count": 10,
-  "fetched": "2026-05-17T20:20:35Z"
+  "post_count": 20,
+  "fetched": "2026-06-01T23:35:02Z"
 }
