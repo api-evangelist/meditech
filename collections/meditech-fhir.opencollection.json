@@ -1,0 +1,376 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Meditech Expanse FHIR R4 API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://yourhospital.meditech.com/oauth/authorize",
+      "accessTokenUrl": "https://yourhospital.meditech.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Capability",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get FHIR Capability Statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/metadata"
+          },
+          "docs": "Returns the server's CapabilityStatement resource describing supported FHIR resources, interactions, and extensions."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Patient",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search patients",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "query",
+                "description": "MRN or other identifier (e.g., identifier=MR|12345)"
+              },
+              {
+                "name": "family",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "given",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "birthdate",
+                "value": "",
+                "type": "query",
+                "description": "FHIR date parameter (e.g., birthdate=1980-01-01)"
+              },
+              {
+                "name": "gender",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_format",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search for patient records using FHIR search parameters including name, birthdate, identifier, and gender. Implements US Core Patient profile."
+        },
+        {
+          "info": {
+            "name": "Get patient by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific patient resource by FHIR logical ID."
+        },
+        {
+          "info": {
+            "name": "Get all patient data (Patient $everything)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/$everything",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns all resources related to a patient in a single Bundle. Implements the FHIR $everything operation for bulk patient data access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Observation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient observations (vital signs, lab results)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/Observation",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "Filter by category (vital-signs, laboratory, imaging, etc.)"
+              },
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "LOINC code filter"
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query",
+                "description": "Date range (e.g., date=ge2024-01-01&date=le2024-12-31)"
+              },
+              {
+                "name": "_count",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve clinical observations for a patient including vital signs, laboratory results, and other measurements."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Condition",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient conditions (problem list, diagnoses)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/Condition",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "clinical-status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "problem-list-item or encounter-diagnosis"
+              }
+            ]
+          },
+          "docs": "Retrieve active and historical conditions for a patient, including problem list entries and encounter diagnoses."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Medication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient medication requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/MedicationRequest",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "intent",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve current and historical medication requests (prescriptions) for a patient."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Allergy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient allergies and intolerances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/AllergyIntolerance",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "clinical-status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve allergy and intolerance records for a patient."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Encounter",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient encounters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/Encounter",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_count",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve clinical encounters (visits, admissions) for a patient."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Diagnostic",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient diagnostic reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/DiagnosticReport",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "LAB, RAD, etc."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve diagnostic reports (lab reports, radiology reports, pathology) for a patient."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
