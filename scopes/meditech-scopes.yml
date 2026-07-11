@@ -1,0 +1,42 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/meditech-fhir-openapi.yml
+schemes:
+- name: SMART_OAuth2
+  source: openapi/meditech-fhir-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://yourhospital.meditech.com/oauth/authorize
+    tokenUrl: https://yourhospital.meditech.com/oauth/token
+  description: SMART on FHIR OAuth 2.0 authorization
+scopes:
+- scope: fhirUser
+  description: FHIR user claim
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/meditech-fhir-openapi.yml
+- scope: launch
+  description: EHR launch context
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/meditech-fhir-openapi.yml
+- scope: openid
+  description: OpenID Connect identity
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/meditech-fhir-openapi.yml
+- scope: patient/*.read
+  description: Read access to all patient-owned resources
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/meditech-fhir-openapi.yml
+- scope: user/*.read
+  description: Practitioner read access to all resources
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/meditech-fhir-openapi.yml

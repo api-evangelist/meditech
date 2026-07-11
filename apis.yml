@@ -46,6 +46,8 @@ apis:
       enable access to patient records, lab results, pharmacy orders, radiology reports, and ADT
       (Admit/Discharge/Transfer) events via HL7 and REST interfaces.
 common:
+  - type: OAuthScopes
+    url: scopes/meditech-scopes.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/meditech
   - url: https://ehr.meditech.com/
