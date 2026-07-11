@@ -46,6 +46,10 @@ apis:
       enable access to patient records, lab results, pharmacy orders, radiology reports, and ADT
       (Admit/Discharge/Transfer) events via HL7 and REST interfaces.
 common:
+  - type: DomainSecurity
+    url: security/meditech-domain-security.yml
+  - type: Authentication
+    url: authentication/meditech-authentication.yml
   - type: OAuthScopes
     url: scopes/meditech-scopes.yml
   - type: LinkedIn

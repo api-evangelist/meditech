@@ -1,0 +1,19 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/meditech-fhir-openapi.yml
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: SMART_OAuth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://yourhospital.meditech.com/oauth/authorize
+    tokenUrl: https://yourhospital.meditech.com/oauth/token
+    scopes: 5
+  description: SMART on FHIR OAuth 2.0 authorization
+  sources:
+  - openapi/meditech-fhir-openapi.yml
