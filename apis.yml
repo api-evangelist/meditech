@@ -46,6 +46,8 @@ apis:
       enable access to patient records, lab results, pharmacy orders, radiology reports, and ADT
       (Admit/Discharge/Transfer) events via HL7 and REST interfaces.
 common:
+  - type: AgenticAccess
+    url: agentic-access/meditech-agentic-access.yml
   - type: DomainSecurity
     url: security/meditech-domain-security.yml
   - type: Authentication
