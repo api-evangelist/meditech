@@ -1,0 +1,112 @@
+openapi: 3.1.0
+info:
+  title: Meditech Expanse FHIR R4 Allergy API
+  description: Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.
+  version: 4.0.0
+  contact:
+    name: Meditech Support
+    url: https://ehr.meditech.com/contact
+  license:
+    name: Proprietary
+    url: https://ehr.meditech.com/privacy-policy
+servers:
+- url: https://{facility}.meditech.com/fhir/r4
+  variables:
+    facility:
+      default: yourhospital
+      description: Your Meditech facility subdomain
+security:
+- SMART_OAuth2:
+  - patient/*.read
+  - user/*.read
+  - launch
+tags:
+- name: Allergy
+  description: Allergy and intolerance records
+paths:
+  /Patient/{id}/AllergyIntolerance:
+    get:
+      operationId: getPatientAllergies
+      summary: Get patient allergies and intolerances
+      description: Retrieve allergy and intolerance records for a patient.
+      tags:
+      - Allergy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: clinical-status
+        in: query
+        schema:
+          type: string
+          enum:
+          - active
+          - inactive
+          - resolved
+      responses:
+        '200':
+          description: Bundle of AllergyIntolerance resources
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/Bundle'
+components:
+  schemas:
+    Bundle:
+      type: object
+      description: FHIR Bundle resource
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Bundle
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - searchset
+          - collection
+          - transaction
+          - batch
+          - history
+        total:
+          type: integer
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation:
+                type: string
+              url:
+                type: string
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+              resource:
+                type: object
+                additionalProperties: true
+  securitySchemes:
+    SMART_OAuth2:
+      type: oauth2
+      description: SMART on FHIR OAuth 2.0 authorization
+      flows:
+        authorizationCode:
+          authorizationUrl: https://yourhospital.meditech.com/oauth/authorize
+          tokenUrl: https://yourhospital.meditech.com/oauth/token
+          scopes:
+            patient/*.read: Read access to all patient-owned resources
+            user/*.read: Practitioner read access to all resources
+            launch: EHR launch context
+            openid: OpenID Connect identity
+            fhirUser: FHIR user claim
+externalDocs:
+  description: Meditech Interoperability Documentation
+  url: https://ehr.meditech.com/ehr-solutions/meditech-interoperability
