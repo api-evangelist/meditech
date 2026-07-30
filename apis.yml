@@ -1,50 +1,289 @@
 aid: meditech
+name: MEDITECH
+type: Index
+specificationVersion: '0.20'
+description: >-
+  MEDITECH (Medical Information Technology, Inc.) is an electronic health record vendor serving
+  community hospitals and health systems, primarily through its MEDITECH Expanse platform. Its
+  API program is delivered through the Greenfield Workspace — a registration-gated developer
+  environment where approved app developers get interactive documentation and a sandbox to
+  execute APIs against a real MEDITECH EHR. Published surfaces are US Core FHIR R4 (view-only
+  patient-facing data, USCDI v1, DSTU2/R4 compatible) and FHIR Scheduling APIs. MEDITECH also
+  operates Traverse Exchange, its national data exchange network and TEFCA on-ramp, connecting
+  700+ facilities across 41 US states plus Canadian deployments.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/meditech.png
 url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/apis.yml
+tags:
+- Company
+- EHR
+- Healthcare
+- FHIR
+- HL7
+- Interoperability
+accessModel:
+  pricing: unknown
+  onboarding: request
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown pricing · Registration request required
+  confidence: high
+  source:
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+  - https://greenfield.meditech.com/explorer/topic/welcome
+  generated: '2026-07-27'
+  method: manual
+  note: >-
+    MEDITECH publishes no API pricing, no plan tiers, and no rate limits. Sandbox access and the
+    ability to execute calls against a real EHR require a Greenfield Workspace registration
+    request (an iFiller form) that MEDITECH reviews — it is not self-serve signup. The reference
+    documentation itself, however, IS publicly reachable at greenfield.meditech.com/explorer
+    without a login. The catch: it is an Angular single-page app that renders entirely
+    client-side, and the host serves robots.txt with `Disallow: /`. So the docs are readable by
+    a human with a browser but invisible to crawlers, to indexes, and to any AI agent that
+    fetches URLs or respects robots — machine-undiscoverable rather than access-controlled.
+x-capabilities:
+  reviewed: '2026-07-27'
+  source: https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
+  write_access: none
+  note: >-
+    IMPORTANT for anyone evaluating MEDITECH for agent or integration work: as of 2026-07-27
+    MEDITECH's developer program exposes NO write surface. Every API available through
+    Greenfield Workspace is read-only. There is no supported public path to create a patient,
+    book an appointment, or reschedule one. A read-only grant is the expected outcome of
+    applying, not a sign of applying to the wrong program.
+  surfaces:
+  - name: FHIR Patient Access API (DSTU2)
+    access: read-only
+    workflow: patient-facing
+    data: Common Clinical Data Set
+    availability: all customers
+    docs: https://greenfield.meditech.com/explorer/topic/patient-health-data
+  - name: FHIR Patient Access API (R4 / US Core)
+    access: read-only
+    workflow: patient-facing
+    data: USCDI R4
+    availability: all customers
+    docs: https://greenfield.meditech.com/explorer/topic/USCore-patient-health-data
+  - name: HL7v2 Outbound Interfaces
+    access: read-only
+    workflow: outbound only (ADT, lab results, medications, orders)
+    availability: all customers
+    docs: https://ehr.meditech.com/hl7-outbound-list-for-greenfield
+  - name: FHIR Scheduling APIs
+    access: not yet available
+    status: coming soon
+    availability: MEDITECH Expanse customers only
+    note: >-
+      MEDITECH's marketing describes Expanse scheduling write-back (Argo-Scheduling, FHIR STU3 —
+      retrieve slots, book visits, manage provider availability) and partners such as Luma Health
+      have shipped it. That is delivered through customer-sponsored or formal-partner integration
+      at the hospital, NOT through self-serve Greenfield access. Greenfield itself still lists
+      FHIR Scheduling as "coming soon".
+x-provenance:
+  reviewed: '2026-07-27'
+  reviewed_by: Kin Lane
+  openapi_origin: api-evangelist-derived
+  note: >-
+    The OpenAPI definitions in this repo are API Evangelist models of the US Core FHIR R4
+    profile that MEDITECH states it supports. They are NOT MEDITECH-published contracts —
+    MEDITECH does not publish an OpenAPI. Its authoritative reference is the Greenfield API
+    Explorer at https://greenfield.meditech.com/explorer, which is publicly reachable but
+    client-rendered and robots-disallowed, so it cannot be fetched or crawled — it has to be
+    read in a browser. The `{facility}` server template reflects the per-customer deployment
+    model; actual service base URLs are issued per organization. Authentication, scopes, and
+    agentic-access artifacts here are derived FROM these models, so they inherit the same
+    derived provenance. Treat all of it as a starting scaffold to reconcile against the
+    Explorer, not as an authoritative interface contract.
+  authoritative_reference: https://greenfield.meditech.com/explorer/topic/welcome
+  explorer_sections:
+  - https://greenfield.meditech.com/explorer/topic/welcome
+  - https://greenfield.meditech.com/explorer/topic/patient-health-data
+  - https://greenfield.meditech.com/explorer/topic/USCore-patient-health-data
+  - https://greenfield.meditech.com/explorer/api
+  - https://greenfield.meditech.com/explorer/endpoints
+  - https://greenfield.meditech.com/explorer/scope
+  - https://greenfield.meditech.com/explorer/authorization
+  - https://greenfield.meditech.com/explorer/status-codes
+  explorer_sections_note: >-
+    Route list confirmed from the Explorer's shipped Angular bundle (main.*.js), not guessed.
+    /explorer/endpoints and /explorer/scope are the two that matter most for reconciliation —
+    they are MEDITECH's own endpoint directory and scope list, and should supersede the derived
+    scopes/ and openapi/ artifacts in this repo once someone transcribes them.
 apis:
-  - aid: meditech:meditech-expanse-fhir-api
-    name: Meditech Expanse FHIR API
-    tags:
-      - EHR
-      - FHIR
-      - Healthcare
-      - HL7
-      - Interoperability
-    image: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/image.png
-    humanURL: https://ehr.meditech.com/ehr-solutions/meditech-interoperability
-    baseURL: https://api.meditech.example.com/fhir
-    properties:
-      - url: https://ehr.meditech.com/ehr-solutions/meditech-interoperability
-        type: Documentation
-      - url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/openapi/meditech-fhir-openapi.yml
-        type: OpenAPI
-      - url: >-
-          https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
-        type: JSONSchema
-      - url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
-        type: JSONLDContext
-    description: >-
-      Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare
-      systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700
-      facilities across 41 US states. Built on HL7 FHIR standards and participating in the Argonaut Project and FHIR at
-      Scale Taskforce (FAST).
-  - aid: meditech:meditech-api
-    name: Meditech EHR API
-    tags:
-      - EHR
-      - Healthcare
-      - HL7
-      - Lab
-      - Pharmacy
-    image: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/image.png
-    humanURL: https://www.meditech.com/
-    baseURL: https://api.meditech.example.com
-    properties:
-      - url: https://www.meditech.com/
-        type: Documentation
-    description: >-
-      Meditech provides electronic health record (EHR) APIs for community hospitals and healthcare organizations. APIs
-      enable access to patient records, lab results, pharmacy orders, radiology reports, and ADT
-      (Admit/Discharge/Transfer) events via HL7 and REST interfaces.
+- aid: meditech:meditech-api
+  name: MEDITECH Expanse FHIR API
+  tags:
+  - EHR
+  - Healthcare
+  - FHIR
+  - HL7
+  image: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/image.png
+  humanURL: https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  properties:
+  - url: https://greenfield.meditech.com/explorer/topic/welcome
+    type: Documentation
+  - url: https://greenfield.meditech.com/explorer/endpoints
+    type: Endpoints
+  - url: https://greenfield.meditech.com/explorer/scope
+    type: Scopes
+  - url: https://greenfield.meditech.com/explorer/authorization
+    type: Authentication
+  - url: https://greenfield.meditech.com/explorer/status-codes
+    type: Errors
+  - url: https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+    type: SignUp
+  description: >-
+    MEDITECH's FHIR API surface for Expanse, exposed to approved developers through the
+    Greenfield Workspace. US Core FHIR R4 provides view-only access to patient-facing data
+    after the patient authorizes the requesting app (USCDI v1, DSTU2/R4 compatible, patient
+    workflows only). Separate FHIR Scheduling APIs support user and patient workflows for
+    Expanse customers. Service base URLs are issued per customer facility.
+- aid: meditech:meditech-allergy-api
+  name: meditech Allergy API
+  description: Allergy and intolerance records
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Allergy
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-allergy-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-capability-api
+  name: meditech Capability API
+  description: FHIR server capability
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Capability
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-capability-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-condition-api
+  name: meditech Condition API
+  description: Problem list and diagnoses
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Condition
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-condition-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-diagnostic-api
+  name: meditech Diagnostic API
+  description: Diagnostic reports (lab, radiology, pathology)
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Diagnostic
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-diagnostic-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-encounter-api
+  name: meditech Encounter API
+  description: Clinical encounters and visits
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Encounter
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-encounter-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-medication-api
+  name: meditech Medication API
+  description: Medication requests and prescriptions
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Medication
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-medication-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-observation-api
+  name: meditech Observation API
+  description: Vital signs and laboratory results
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Observation
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-observation-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
+- aid: meditech:meditech-patient-api
+  name: meditech Patient API
+  description: US Core Patient resources
+  humanURL: https://greenfield.meditech.com/explorer/topic/welcome
+  baseURL: https://{facility}.meditech.com/fhir/r4
+  tags:
+  - Patient
+  properties:
+  - type: OpenAPI
+    url: openapi/meditech-patient-api-openapi.yml
+  - type: Documentation
+    url: https://greenfield.meditech.com/explorer/api
+  - type: JSONSchema
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
+  - type: JSONLDContext
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
 common:
   - type: AgenticAccess
     url: agentic-access/meditech-agentic-access.yml
@@ -56,28 +295,52 @@ common:
     url: scopes/meditech-scopes.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/meditech
-  - url: https://ehr.meditech.com/
+  - url: https://greenfield.meditech.com/
     type: Portal
-  - url: https://ehr.meditech.com/
+  - url: https://www.meditech.com/
     type: Website
-  - url: https://ehr.meditech.com/ehr-solutions/meditech-interoperability
+  - url: https://greenfield.meditech.com/explorer/topic/welcome
     type: Documentation
+  - url: https://greenfield.meditech.com/explorer/api
+    type: APIReference
+  - url: https://greenfield.meditech.com/explorer/endpoints
+    type: Endpoints
+  - url: https://greenfield.meditech.com/explorer/scope
+    type: Scopes
+  - url: https://greenfield.meditech.com/explorer/authorization
+    type: Authentication
+  - url: https://greenfield.meditech.com/explorer/status-codes
+    type: Errors
+  - url: https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+    type: SignUp
+  - url: https://ehr.meditech.com/ehr-solutions/how-to-work-in-the-greenfield-workspace
+    type: GettingStarted
+  - url: https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
+    type: Resources
+  - url: https://ehr.meditech.com/hl7-outbound-list-for-greenfield
+    type: HL7Interfaces
+  - url: https://ehr.meditech.com/ehr-solutions/meditech-interoperability
+    type: Interoperability
   - url: https://blog.meditech.com/
     type: Blog
   - url: https://ehr.meditech.com/contact
     type: Support
   - url: https://ehr.meditech.com/privacy-policy
     type: PrivacyPolicy
-  - url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/openapi/meditech-fhir-openapi.yml
+  - url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/openapi/_original/meditech-fhir-openapi.yml
     type: OpenAPI
   - url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json
     type: JSONSchema
   - url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld
     type: JSONLDContext
-maintainer:
-  name: Kin Lane
+  - url: collections/meditech-fhir.postman_collection.json
+    type: PostmanCollection
+  - url: collections/meditech-fhir.opencollection.json
+    type: OpenCollection
+maintainers:
+- FN: Kin Lane
   email: kin@apievangelist.com
-modified: '2026-05-19'
-description: >-
-  EHR Interoperability benefits everyone in the care network and helps you connect across the continuum of care.
-  MEDITECH supports industry standards.
+- FN: APIs.json
+  email: info@apis.io
+created: '2026-05-04'
+modified: '2026-07-27'
