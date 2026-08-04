@@ -1,6 +1,15 @@
 generated: '2026-07-11'
 method: derived
-source: openapi/meditech-fhir-openapi.yml
+source: openapi/_original/meditech-fhir-openapi.yml
+x-provenance:
+  reviewed: '2026-07-27'
+  origin: api-evangelist-derived
+  note: >-
+    Derived from an API Evangelist model of US Core FHIR R4, NOT from MEDITECH-published
+    material. The authorizationUrl/tokenUrl below use the `yourhospital` placeholder from that
+    model; real SMART on FHIR endpoints are issued per customer facility and must be read from
+    each deployment's .well-known/smart-configuration. Do not treat these URLs as callable.
+  reconcile_against: https://greenfield.meditech.com/explorer/authorization
 summary:
   types:
   - oauth2
@@ -16,4 +25,4 @@ schemes:
     scopes: 5
   description: SMART on FHIR OAuth 2.0 authorization
   sources:
-  - openapi/meditech-fhir-openapi.yml
+  - openapi/_original/meditech-fhir-openapi.yml

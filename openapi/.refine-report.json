@@ -1,0 +1,28 @@
+{
+  "provider": "meditech",
+  "sources": [
+    "meditech-allergy-api-openapi.yml",
+    "meditech-capability-api-openapi.yml",
+    "meditech-condition-api-openapi.yml",
+    "meditech-diagnostic-api-openapi.yml",
+    "meditech-encounter-api-openapi.yml",
+    "meditech-medication-api-openapi.yml",
+    "meditech-observation-api-openapi.yml",
+    "meditech-patient-api-openapi.yml"
+  ],
+  "outputs": [
+    "meditech-allergy-api-openapi.yml",
+    "meditech-capability-api-openapi.yml",
+    "meditech-condition-api-openapi.yml",
+    "meditech-diagnostic-api-openapi.yml",
+    "meditech-encounter-api-openapi.yml",
+    "meditech-medication-api-openapi.yml",
+    "meditech-observation-api-openapi.yml",
+    "meditech-patient-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,4 +1,22 @@
 openapi: 3.1.0
+x-provenance:
+  reviewed: '2026-07-27'
+  origin: api-evangelist-derived
+  publisher-published: false
+  note: >-
+    API Evangelist model of the US Core FHIR R4 profile MEDITECH states it supports. This is
+    NOT a MEDITECH-published OpenAPI — MEDITECH publishes none. Its authoritative reference is
+    the Greenfield API Explorer at https://greenfield.meditech.com/explorer/topic/welcome, which
+    is publicly reachable but client-rendered and robots-disallowed, so it cannot be fetched or
+    crawled — reconcile this file against it by hand. The {facility} server variable
+    reflects MEDITECH's per-customer deployment model; real service base URLs are issued per
+    organization. Paths, parameters, and response shapes here follow the FHIR R4 standard and
+    have not been confirmed against a live MEDITECH endpoint. Validate every operation against
+    the target facility's CapabilityStatement (/metadata) before building on it.
+  verify-against: https://greenfield.meditech.com/explorer/api
+  endpoint-directory: https://greenfield.meditech.com/explorer/endpoints
+  scope-list: https://greenfield.meditech.com/explorer/scope
+  sandbox-registration: https://ehr.meditech.com/ehr-solutions/greenfield-workspace
 info:
   title: Meditech Expanse FHIR R4 Allergy Diagnostic API
   description: Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.

@@ -1,9 +1,19 @@
 generated: '2026-07-11'
 method: derived
-source: openapi/meditech-fhir-openapi.yml
+source: openapi/_original/meditech-fhir-openapi.yml
+x-provenance:
+  reviewed: '2026-07-27'
+  origin: api-evangelist-derived
+  note: >-
+    These are standard SMART on FHIR scopes taken from an API Evangelist model of US Core
+    FHIR R4 — they are NOT a MEDITECH-published scope list, and may be broader than what
+    MEDITECH actually grants. MEDITECH publishes its real scope list in the Greenfield API
+    Explorer; it is rendered client-side on a robots-disallowed host, so it could not be
+    fetched. Transcribe it and replace this file.
+  reconcile_against: https://greenfield.meditech.com/explorer/scope
 schemes:
 - name: SMART_OAuth2
-  source: openapi/meditech-fhir-openapi.yml
+  source: openapi/_original/meditech-fhir-openapi.yml
   flows:
   - flow: authorizationCode
     authorizationUrl: https://yourhospital.meditech.com/oauth/authorize
@@ -15,28 +25,28 @@ scopes:
   flows:
   - authorizationCode
   sources:
-  - openapi/meditech-fhir-openapi.yml
+  - openapi/_original/meditech-fhir-openapi.yml
 - scope: launch
   description: EHR launch context
   flows:
   - authorizationCode
   sources:
-  - openapi/meditech-fhir-openapi.yml
+  - openapi/_original/meditech-fhir-openapi.yml
 - scope: openid
   description: OpenID Connect identity
   flows:
   - authorizationCode
   sources:
-  - openapi/meditech-fhir-openapi.yml
+  - openapi/_original/meditech-fhir-openapi.yml
 - scope: patient/*.read
   description: Read access to all patient-owned resources
   flows:
   - authorizationCode
   sources:
-  - openapi/meditech-fhir-openapi.yml
+  - openapi/_original/meditech-fhir-openapi.yml
 - scope: user/*.read
   description: Practitioner read access to all resources
   flows:
   - authorizationCode
   sources:
-  - openapi/meditech-fhir-openapi.yml
+  - openapi/_original/meditech-fhir-openapi.yml
