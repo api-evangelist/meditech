@@ -1,0 +1,66 @@
+generated: '2026-08-06'
+method: harvested
+publisher: Medical Information Technology, Inc
+description: >-
+  MEDITECH's SMART-on-FHIR discovery document for the Greenfield Workspace sandbox, read from
+  the live server, plus the grant-type behaviour confirmed by first-hand testing with issued
+  sandbox credentials. First-party artifact.
+source: https://greenfield-prod-apis.meditech.com/.well-known/smart-configuration
+environment: Greenfield Workspace sandbox (complimentary developer program)
+endpoints:
+  issuer: https://greenfield-prod-apis.meditech.com/
+  authorization: https://greenfield-prod-apis.meditech.com/oauth/authorize
+  token: https://greenfield-prod-apis.meditech.com/oauth/token
+  introspection: https://greenfield-prod-apis.meditech.com/oauth/introspect
+  registration: https://greenfield-prod-apis.meditech.com/oauth/register
+  fhir_base: https://greenfield-prod-apis.meditech.com/v2/uscore/STU6
+grant_types_advertised:
+  - authorization_code
+  - client_credentials
+  - refresh_token
+code_challenge_methods:
+  - S256
+token_endpoint_auth_methods:
+  - client_secret_post
+  - client_secret_basic
+  - private_key_jwt
+scopes:
+  total_advertised: 581
+  sandbox_default: patient/*.read
+  note: >-
+    The wildcard patient/*.read is enabled in Greenfield for exploratory testing only. MEDITECH
+    states production applications are restricted to the minimum scopes for an approved workflow.
+grant_reality:
+  summary: >-
+    client_credentials is ADVERTISED in the discovery document but is NOT enabled for sandbox
+    clients. A discovery document is a statement of what the server supports, not of what a
+    given client is entitled to, and the two differ here.
+  evidence:
+    - test: client_credentials with the issued client id and secret
+      scopes_tried: [system/Patient.read, patient/*.read]
+      result: HTTP 400 {"error":"unauthorized_client"}
+    - test: control — same client id, deliberately incorrect secret
+      result: HTTP 401 {"error":"invalid_client"}
+    - conclusion: >-
+        Two different failures. The credentials authenticate correctly; the client is simply not
+        authorized for that grant. Without the control, the 400 would read as a bad credential.
+  confirmed_by_vendor_documentation: >-
+    "Getting Started with Greenfield Workspace v3.0" states plainly that the Client Credentials
+    Grant (system-level access) is not available in the complimentary sandbox environment, and
+    its FAQ explains it is reserved for system-to-system workflows reviewed during production
+    onboarding rather than in Greenfield.
+usable_flow:
+  grant: authorization_code
+  pkce: S256
+  requires_browser: true
+  scope: patient/*.read
+  note: >-
+    There is no portal account and no login page. The issued credentials are an OAuth client id
+    and secret, not a username and password. Every path on greenfield.meditech.com returns a
+    byte-identical Angular shell, so no server-rendered login exists to find.
+x-evidence:
+  verified: '2026-08-06'
+  smart_configuration_status: 200
+  note: >-
+    Tested first-hand with sandbox credentials issued to API Evangelist on 2026-07-27, during a
+    deliberate walk of MEDITECH's own onboarding process.

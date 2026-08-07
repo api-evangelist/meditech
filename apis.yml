@@ -43,15 +43,31 @@ accessModel:
     a human with a browser but invisible to crawlers, to indexes, and to any AI agent that
     fetches URLs or respects robots — machine-undiscoverable rather than access-controlled.
 x-capabilities:
-  reviewed: '2026-07-27'
-  source: https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
-  write_access: none
+  reviewed: '2026-08-06'
+  source: https://greenfield-prod-apis.meditech.com/v2/uscore/STU6/metadata
+  previously_reviewed: '2026-07-27'
+  previous_source: https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
+  write_access: two-resources-only
   note: >-
-    IMPORTANT for anyone evaluating MEDITECH for agent or integration work: as of 2026-07-27
-    MEDITECH's developer program exposes NO write surface. Every API available through
-    Greenfield Workspace is read-only. There is no supported public path to create a patient,
-    book an appointment, or reschedule one. A read-only grant is the expected outcome of
-    applying, not a sign of applying to the wrong program.
+    IMPORTANT for anyone evaluating MEDITECH for agent or integration work. Read from
+    MEDITECH's own FHIR CapabilityStatement on 2026-08-06, not inferred from documentation:
+    the Greenfield developer program exposes 33 resources, and exactly TWO of them accept
+    writes — Communication (create) and QuestionnaireResponse (create, update). Everything
+    else is read and search only.
+    In particular: Appointment supports read and search-type but NEITHER create NOR update,
+    and Patient supports read and search-type with NO create. So there is no supported public
+    path to book an appointment, reschedule one, or register a patient. A read-only grant is
+    the expected outcome of applying, not a sign of applying to the wrong program.
+    CORRECTION: this block previously stated MEDITECH exposes NO write surface at all. That
+    was inferred from the Greenfield resources page rather than read from the contract. It was
+    wrong in detail — a narrow write surface does exist — though the practical conclusion for
+    scheduling and patient creation is unchanged. See
+    conformance/meditech-greenfield-conformance.yml for the full resource and interaction table.
+  contract_vs_marketing: >-
+    The Greenfield resources page lists FHIR Scheduling as "coming soon" and Expanse-only,
+    while the live CapabilityStatement already exposes Appointment for read and search. The
+    published contract and the marketing page disagree; the contract is the one an integrator
+    can act on.
   surfaces:
   - name: FHIR Patient Access API (DSTU2)
     access: read-only
@@ -289,6 +305,14 @@ common:
     url: agentic-access/meditech-agentic-access.yml
   - type: DomainSecurity
     url: security/meditech-domain-security.yml
+  - type: Conformance
+    url: conformance/meditech-greenfield-conformance.yml
+  - type: CapabilityStatement
+    url: conformance/meditech-greenfield-capabilitystatement.json
+  - type: WellKnown
+    url: well-known/meditech-greenfield-smart-configuration.json
+  - type: Authentication
+    url: authentication/meditech-greenfield-oauth.yml
   - type: Authentication
     url: authentication/meditech-authentication.yml
   - type: OAuthScopes

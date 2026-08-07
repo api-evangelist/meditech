@@ -1,0 +1,90 @@
+generated: '2026-08-06'
+method: harvested
+publisher: Medical Information Technology, Inc
+description: >-
+  MEDITECH's own FHIR CapabilityStatement for the Greenfield Workspace sandbox, read from the
+  live server. This is a FIRST-PARTY artifact — MEDITECH publishes it, we did not derive it.
+  It supersedes inference from the Greenfield marketing pages for any question about which
+  resources exist and which interactions they support.
+source: https://greenfield-prod-apis.meditech.com/v2/uscore/STU6/metadata
+environment: Greenfield Workspace sandbox (complimentary developer program)
+statement:
+  resourceType: CapabilityStatement
+  status: active
+  fhirVersion: 4.0.1
+  software: 'Interoperability Services: US Core STU6 FHIR R4 2.0.0'
+  publisher_date: '2023-05-25'
+  mode: server
+  resource_count: 33
+interactions_available:
+  - read
+  - search-type
+  - create
+  - update
+write_surface:
+  summary: >-
+    A write surface EXISTS, but it is two resources wide. Every other resource is read and
+    search only. This corrects the earlier record in this repo, which said MEDITECH exposes no
+    write surface at all — that was inferred from the Greenfield resources page rather than
+    read from the contract, and it was wrong in detail though right in effect.
+  resources:
+    - resource: Communication
+      interactions: [read, search-type, create]
+    - resource: QuestionnaireResponse
+      interactions: [read, search-type, create, update]
+read_only_resources:
+  - AllergyIntolerance
+  - Appointment
+  - Binary
+  - CarePlan
+  - CareTeam
+  - Condition
+  - Coverage
+  - Device
+  - DiagnosticReport
+  - DocumentReference
+  - Encounter
+  - Goal
+  - Group
+  - Immunization
+  - Location
+  - Media
+  - Medication
+  - MedicationDispense
+  - MedicationRequest
+  - Observation
+  - Organization
+  - Patient
+  - Practitioner
+  - PractitionerRole
+  - Procedure
+  - Provenance
+  - RelatedPerson
+  - ServiceRequest
+  - Specimen
+  - Task
+  - ValueSet
+notable:
+  - >-
+    Appointment is present and supports read and search-type. The Greenfield resources page
+    still lists FHIR Scheduling as "coming soon" and Expanse-only. The contract and the
+    marketing page disagree; the contract is the one an integrator can act on.
+  - >-
+    Appointment supports NEITHER create NOR update, so booking and rescheduling are not
+    reachable through this program regardless of what the scheduling roadmap says.
+  - >-
+    Patient supports read and search-type only. There is no create, so an application cannot
+    register a patient through this API.
+  - >-
+    /metadata answers anonymously (HTTP 200, 51,718 bytes) while /Patient returns HTTP 401 on
+    the same host, which is what makes the 200 meaningful rather than a catch-all handler.
+x-evidence:
+  verified: '2026-08-06'
+  metadata_status: 200
+  metadata_bytes: 51718
+  control: >-
+    GET /v2/uscore/STU6/Patient on the same host returned HTTP 401 unauthenticated, confirming
+    the anonymous 200 on /metadata is a real open endpoint and not a blanket response.
+  note: >-
+    Harvested during a first-hand walk of MEDITECH's Greenfield onboarding, after API
+    Evangelist was granted sandbox credentials on 2026-07-27.
