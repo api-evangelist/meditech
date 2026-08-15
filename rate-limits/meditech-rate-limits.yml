@@ -1,0 +1,28 @@
+generated: '2026-08-14'
+method: searched
+source: https://home.meditech.com/en/d/restapiresources/pages/apiterms.htm
+description: >-
+  Search for published rate limits, response headers, and exhaustion behavior. This repo
+  previously scaffolded numeric limits (10 req/min free tier, X-RateLimit-* headers) that were
+  fabricated placeholder values, quarantined in _scaffold/ during a 2026-07-27 provenance
+  review, and are NOT reproduced here.
+limit_count: 0
+limits: []
+headers_documented: {}
+headers_observed_live: {}
+policy:
+  documented: true
+  text: >-
+    "MEDITECH sets and enforces limits on your use of the MEDITECH API, in our sole
+    discretion, without notice or liability," including the right to "rate limit or block
+    apps that make a large number of calls to the MEDITECH API."
+  source: https://home.meditech.com/en/d/restapiresources/pages/apiterms.htm
+  numeric_limit_published: false
+  response_headers_published: false
+note: >-
+  MEDITECH documents a DISCRETIONARY rate-limiting POLICY (it reserves the right to throttle or
+  block) but publishes no numeric threshold, no burst allowance, no response header contract
+  (no X-RateLimit-*/RateLimit-*/Retry-After observed on any live probe in this pass), and no
+  429-handling guidance. An honest zero on the machine-readable limit itself, alongside a real
+  documented policy that a limit exists in principle -- both facts recorded rather than
+  collapsing one into the other.

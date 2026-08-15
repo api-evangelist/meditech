@@ -1,0 +1,193 @@
+{
+  "item": [
+    {
+      "id": "7a24dd3b-1c64-42ac-87a3-a5539ed668fe",
+      "name": "Condition",
+      "description": {
+        "content": "Problem list and diagnoses",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "da48927c-e92a-4623-b46b-dfe1321c0532",
+          "name": "Get patient conditions (problem list, diagnoses)",
+          "request": {
+            "name": "Get patient conditions (problem list, diagnoses)",
+            "description": {
+              "content": "Retrieve active and historical conditions for a patient, including problem list entries and encounter diagnoses.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Patient",
+                ":id",
+                "Condition"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "clinical-status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>",
+                  "description": "problem-list-item or encounter-diagnosis"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "Your Meditech facility subdomain",
+                  "type": "any",
+                  "value": "{{facility}}",
+                  "key": "facility"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "73cc827c-6f6a-4088-8f81-f014e18d2e93",
+              "name": "Bundle of Condition resources",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient",
+                    ":id",
+                    "Condition"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "clinical-status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"Bundle\",\n  \"id\": \"string\",\n  \"type\": \"collection\",\n  \"total\": 6965,\n  \"link\": [\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"entry\": [\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": false,\n        \"key_1\": 9892.79116860443,\n        \"key_2\": \"string\",\n        \"key_3\": 8366,\n        \"key_4\": true\n      }\n    },\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": 7395,\n        \"key_1\": 2184.973096624331\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Meditech facility subdomain",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "yourhospital",
+      "key": "facility"
+    },
+    {
+      "type": "string",
+      "value": "https://{{facility}}.meditech.com/fhir/r4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "patient/*.read user/*.read launch openid fhirUser"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://yourhospital.meditech.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://yourhospital.meditech.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "973b2886-6e2f-4eba-857d-1e3574f77e4a",
+    "name": "Meditech Expanse FHIR R4 Allergy Condition API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.\n\nContact Support:\n Name: Meditech Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+generated: '2026-08-14'
+method: searched
+source:
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
+  - https://home.meditech.com/en/d/restapiresources/pages/apidoc.htm
+description: >-
+  Search for a first-party MEDITECH client library / SDK across npm, PyPI, RubyGems,
+  Packagist, crates.io, pkg.go.dev, NuGet, and Maven Central, plus MEDITECH's own developer
+  pages and a GitHub-org search.
+official: false
+packages: []
+package_count: 0
+note: >-
+  No first-party MEDITECH SDK or client library was found on any public package registry
+  (npm/pypi/rubygems/packagist/crates.io/pkg.go.dev/nuget/maven central all queried, none
+  return a MEDITECH-published package under obvious names such as meditech, meditech-fhir,
+  or greenfield-fhir). No official MEDITECH GitHub organization exists either -- a GitHub
+  search for MEDITECH/MEDITECH-EHR surfaces only unrelated third-party repos with "meditech"
+  in the name. MEDITECH's own Greenfield developer pages describe interactive documentation
+  and a sandbox for calling the REST/FHIR API directly; they do not mention or link a
+  client SDK in any language. This is consistent with the program's shape: it is a
+  registration-gated FHIR API consumed by third-party app developers writing their own
+  clients against a standard (US Core FHIR R4), not a platform MEDITECH ships its own SDK
+  for. An honest zero, not an unchecked gap.

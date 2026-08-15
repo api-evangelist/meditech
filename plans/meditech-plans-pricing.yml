@@ -1,0 +1,19 @@
+generated: '2026-08-14'
+method: searched
+source:
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+  - https://home.meditech.com/en/d/restapiresources/pages/apiterms.htm
+description: >-
+  Search for a MEDITECH API pricing/plans page. This repo previously scaffolded a Free/
+  Professional/Enterprise tier structure with numeric quotas and prices ($0.00, 1,000 req/mo,
+  etc.) -- those were fabricated placeholder values, quarantined in _scaffold/ during a
+  2026-07-27 provenance review, and are NOT reproduced here.
+plan_count: 0
+plans: []
+note: >-
+  MEDITECH publishes no API pricing, no plan tiers, no quotas, and no self-serve billing.
+  Access is a Greenfield Workspace registration request MEDITECH reviews (accessModel in
+  apis.yml: pricing unknown, onboarding request, public false). The API Terms of Use page
+  discusses usage LIMITS in policy terms only ("MEDITECH sets and enforces limits... in our
+  sole discretion") with no numeric tier, quota, or price attached to any plan name. An honest
+  zero, not an unchecked gap -- see _scaffold/README.md for the fabrication this supersedes.

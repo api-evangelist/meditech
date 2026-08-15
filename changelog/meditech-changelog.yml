@@ -1,0 +1,31 @@
+generated: '2026-08-14'
+method: searched
+source:
+  - https://ehr.meditech.com/news-tags/expanse-updates
+  - https://greenfield-prod-apis.meditech.com/v2/uscore/STU6/metadata
+description: >-
+  MEDITECH publishes no dated, versioned API changelog. The nearest public surface is a
+  general company news feed that covers customer implementations and product announcements,
+  not API-specific release notes.
+scheme: fhir-implementation-guide-version
+current_version: 'US Core STU6 FHIR R4 2.0.0'
+current_version_date: '2023-05-25'
+current_version_evidence: >-
+  CapabilityStatement.software + publisher_date, read live from
+  https://greenfield-prod-apis.meditech.com/v2/uscore/STU6/metadata on 2026-08-06.
+recent_entries: []
+recent_entries_note: >-
+  No structured version-over-version entries exist to record -- the news feed at
+  ehr.meditech.com/news-tags/expanse-updates is prose company news (e.g. "MEDITECH advances
+  toward agentic user experience and previews new AI initiatives", Sep 2025; "MEDITECH
+  announces cloud-based enhancements to Patient and Consumer Health Portal", Jun 2024), not
+  API changelog entries with breaking-vs-additive classification. Listing prose headlines here
+  would misrepresent them as release notes.
+nearest_news_surface:
+  url: https://ehr.meditech.com/news-tags/expanse-updates
+  kind: general-product-news
+  sample_headlines:
+    - date: '2025-09-16'
+      title: MEDITECH advances toward agentic user experience and previews new AI initiatives
+    - date: '2024-06-26'
+      title: MEDITECH announces cloud-based enhancements to Patient and Consumer Health Portal

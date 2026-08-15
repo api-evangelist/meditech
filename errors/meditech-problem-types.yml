@@ -1,0 +1,69 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/_original/meditech-fhir-openapi.yml, openapi/meditech-patient-api-openapi.yml
+format: fhir-operationoutcome
+description: >-
+  MEDITECH's error surface is the standard FHIR OperationOutcome resource, not RFC 9457
+  problem+json. Derived from the 401/404 responses modeled in this repo's OpenAPI plus the
+  OperationOutcome schema shared across every operation. MEDITECH's own status-code reference
+  (https://greenfield.meditech.com/explorer/status-codes) could not be fetched to enrich this
+  -- it is a robots-disallowed, client-rendered Angular SPA -- so titles/remediation below are
+  API Evangelist's read of standard FHIR/SMART semantics, not MEDITECH-published text.
+envelope:
+  media_type: application/fhir+json
+  schema_ref: '#/components/schemas/OperationOutcome'
+  shape:
+    resourceType: OperationOutcome
+    issue:
+      - severity: 'fatal | error | warning | information'
+        code: string (FHIR IssueType code, e.g. security, not-found, processing)
+        diagnostics: string (human-readable detail)
+problem_types:
+  - status: 401
+    title: Unauthorized
+    modeled_on: searchPatients (GET /Patient)
+    likely_cause: Missing, expired, or invalid SMART on FHIR bearer token.
+    remediation: >-
+      Re-run the authorization_code flow (PKCE, S256) against
+      https://greenfield-prod-apis.meditech.com/oauth/authorize; confirm the token has not
+      expired (grant TTLs are per max-ttl in agentic-access/meditech-agentic-access.yml).
+    evidence: >-
+      Confirmed live: GET /Patient on greenfield-prod-apis.meditech.com returned HTTP 401
+      unauthenticated (used as the control proving /metadata's anonymous 200 was real, per
+      conformance/meditech-greenfield-conformance.yml x-evidence).
+  - status: 404
+    title: Not Found
+    modeled_on: getPatient (GET /Patient/{id})
+    likely_cause: No resource exists with the given FHIR logical id, or the authenticated context cannot see it.
+    remediation: Verify the id came from a prior search/reference rather than being constructed by the client.
+  - status: 400
+    title: Bad Request / unauthorized_client
+    modeled_on: OAuth token endpoint (not a resource operation)
+    likely_cause: >-
+      A grant type is requested that the discovery document advertises but the specific
+      client is not authorized for.
+    remediation: >-
+      Do not assume a 400 here means bad credentials -- confirmed first-hand that
+      client_credentials returns 400 {"error":"unauthorized_client"} for a validly
+      authenticated sandbox client, distinct from the 401 invalid_client returned for a wrong
+      secret. See authentication/meditech-greenfield-oauth.yml grant_reality.evidence.
+  - status: 403
+    title: Forbidden (inferred, not evidenced)
+    modeled_on: none -- not observed in this repo's live probes
+    likely_cause: Scope-authorized but resource-level access denied (e.g. patient context mismatch).
+    remediation: Confirm the launch context / patient compartment matches the requested resource.
+    note: >-
+      Not confirmed live. Included because SMART on FHIR servers conventionally distinguish
+      401 (no/invalid token) from 403 (valid token, insufficient authorization); no live 403
+      was captured during this repo's sandbox testing.
+  - status: 429
+    title: Too Many Requests (documented as policy, not observed)
+    likely_cause: >-
+      MEDITECH's API Terms of Use state MEDITECH may "rate limit or block apps that make a
+      large number of calls to the MEDITECH API" at its sole discretion.
+    remediation: Implement backoff; no documented Retry-After header or numeric threshold exists to target.
+    evidence: https://home.meditech.com/en/d/restapiresources/pages/apiterms.htm
+    note: See rate-limits/meditech-rate-limits.yml -- policy exists, no published numeric limit or response header.
+not_evidenced:
+  - MEDITECH's own status-code reference page was not reachable (robots-disallowed SPA), so
+    this list should be reconciled against it once transcribed, per x-provenance in apis.yml.

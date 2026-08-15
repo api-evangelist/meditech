@@ -1,0 +1,213 @@
+{
+  "item": [
+    {
+      "id": "a976049d-53fc-4f65-a15d-47aadde80972",
+      "name": "Observation",
+      "description": {
+        "content": "Vital signs and laboratory results",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "55881831-7ffd-4258-a230-ebd84b97e9b5",
+          "name": "Get patient observations (vital signs, lab results)",
+          "request": {
+            "name": "Get patient observations (vital signs, lab results)",
+            "description": {
+              "content": "Retrieve clinical observations for a patient including vital signs, laboratory results, and other measurements.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Patient",
+                ":id",
+                "Observation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>",
+                  "description": "Filter by category (vital-signs, laboratory, imaging, etc.)"
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "LOINC code filter"
+                },
+                {
+                  "disabled": false,
+                  "key": "date",
+                  "value": "<string>",
+                  "description": "Date range (e.g., date=ge2024-01-01&date=le2024-12-31)"
+                },
+                {
+                  "disabled": false,
+                  "key": "_count",
+                  "value": "100"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "Your Meditech facility subdomain",
+                  "type": "any",
+                  "value": "{{facility}}",
+                  "key": "facility"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "63b58072-6e9d-4590-859a-185712e80637",
+              "name": "Bundle of Observation resources",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient",
+                    ":id",
+                    "Observation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "_count",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"Bundle\",\n  \"id\": \"string\",\n  \"type\": \"searchset\",\n  \"total\": 6059,\n  \"link\": [\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"entry\": [\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": 7139,\n        \"key_1\": true\n      }\n    },\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": true\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Meditech facility subdomain",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "yourhospital",
+      "key": "facility"
+    },
+    {
+      "type": "string",
+      "value": "https://{{facility}}.meditech.com/fhir/r4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "patient/*.read user/*.read launch openid fhirUser"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://yourhospital.meditech.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://yourhospital.meditech.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "29bbb0fe-137b-413f-b04c-7aae74449fe6",
+    "name": "Meditech Expanse FHIR R4 Allergy Observation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.\n\nContact Support:\n Name: Meditech Support",
+      "type": "text/plain"
+    }
+  }
+}

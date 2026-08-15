@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Meditech Expanse FHIR R4 Allergy Diagnostic API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://yourhospital.meditech.com/oauth/authorize",
+      "accessTokenUrl": "https://yourhospital.meditech.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Diagnostic",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get patient diagnostic reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/DiagnosticReport",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "LAB, RAD, etc."
+              },
+              {
+                "name": "date",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve diagnostic reports (lab reports, radiology reports, pathology) for a patient."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

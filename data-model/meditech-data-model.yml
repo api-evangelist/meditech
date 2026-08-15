@@ -1,0 +1,111 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/*.yml (8 files, path structure) + conformance/meditech-greenfield-conformance.yml
+description: >-
+  Entity-relationship graph derived from this repo's OpenAPI path structure. Every non-Patient
+  resource in this API is only reachable nested under /Patient/{id}/..., which directly encodes
+  a belongs_to relationship in the URL itself -- not inferred from $ref links (the split
+  per-tag specs carry only a generic Bundle wrapper schema, not typed FHIR resource schemas).
+  Cross-checked against the 33-resource live CapabilityStatement for what MEDITECH's real
+  server exposes beyond what's modeled here.
+entities:
+  - name: Patient
+    fhir_type: Patient
+    root: true
+    operations: ['search /Patient', 'read /Patient/{id}', '$everything /Patient/{id}/$everything']
+    modeled_in: openapi/meditech-patient-api-openapi.yml
+  - name: AllergyIntolerance
+    fhir_type: AllergyIntolerance
+    modeled_in: openapi/meditech-allergy-api-openapi.yml
+    operations: ['read/search /Patient/{id}/AllergyIntolerance']
+  - name: Condition
+    fhir_type: Condition
+    modeled_in: openapi/meditech-condition-api-openapi.yml
+    operations: ['read/search /Patient/{id}/Condition']
+  - name: DiagnosticReport
+    fhir_type: DiagnosticReport
+    modeled_in: openapi/meditech-diagnostic-api-openapi.yml
+    operations: ['read/search /Patient/{id}/DiagnosticReport']
+  - name: Encounter
+    fhir_type: Encounter
+    modeled_in: openapi/meditech-encounter-api-openapi.yml
+    operations: ['read/search /Patient/{id}/Encounter']
+  - name: MedicationRequest
+    fhir_type: MedicationRequest
+    modeled_in: openapi/meditech-medication-api-openapi.yml
+    operations: ['read/search /Patient/{id}/MedicationRequest']
+  - name: Observation
+    fhir_type: Observation
+    modeled_in: openapi/meditech-observation-api-openapi.yml
+    operations: ['read/search /Patient/{id}/Observation']
+  - name: CapabilityStatement
+    fhir_type: CapabilityStatement
+    root: true
+    operations: ['read /metadata']
+    modeled_in: openapi/meditech-capability-api-openapi.yml
+    note: Self-describing server metadata resource, not part of the patient graph.
+relationships:
+  - from: AllergyIntolerance
+    to: Patient
+    kind: belongs_to
+    via: '{id} path parameter on /Patient/{id}/AllergyIntolerance'
+  - from: Condition
+    to: Patient
+    kind: belongs_to
+    via: '{id} path parameter on /Patient/{id}/Condition'
+  - from: DiagnosticReport
+    to: Patient
+    kind: belongs_to
+    via: '{id} path parameter on /Patient/{id}/DiagnosticReport'
+  - from: Encounter
+    to: Patient
+    kind: belongs_to
+    via: '{id} path parameter on /Patient/{id}/Encounter'
+  - from: MedicationRequest
+    to: Patient
+    kind: belongs_to
+    via: '{id} path parameter on /Patient/{id}/MedicationRequest'
+  - from: Observation
+    to: Patient
+    kind: belongs_to
+    via: '{id} path parameter on /Patient/{id}/Observation'
+  - from: Patient
+    to: [AllergyIntolerance, Condition, DiagnosticReport, Encounter, MedicationRequest, Observation]
+    kind: has_many
+    via: '$everything on /Patient/{id}/$everything returns the union of all of the above'
+unmodeled_live_resources:
+  description: >-
+    MEDITECH's live CapabilityStatement (probed 2026-08-06) exposes 33 resources total; only 7
+    (Patient + the 6 above) plus CapabilityStatement are modeled as OpenAPI operations in this
+    repo. The remaining 25 are documented as available but have no operation/schema derived here
+    yet -- listed for completeness from conformance/meditech-greenfield-conformance.yml, not
+    graphed since no path structure exists in this repo to derive relationships from.
+  resources:
+    - Appointment
+    - Binary
+    - CarePlan
+    - CareTeam
+    - Communication
+    - Coverage
+    - Device
+    - DocumentReference
+    - Goal
+    - Group
+    - Immunization
+    - Location
+    - Media
+    - MedicationDispense
+    - Organization
+    - Practitioner
+    - PractitionerRole
+    - Procedure
+    - Provenance
+    - QuestionnaireResponse
+    - RelatedPerson
+    - ServiceRequest
+    - Specimen
+    - Task
+    - ValueSet
+render: >-
+  No subway/ diagram exists in this repo for this graph; it is small enough (7-8 nodes, all
+  radiating from Patient) to read directly from relationships[] above.

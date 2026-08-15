@@ -1,0 +1,119 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/*.yml (7 files, 10 operations)
+description: >-
+  No official MEDITECH-hosted or MEDITECH-published MCP server was found (web search for
+  "MEDITECH Greenfield MCP" / "Model Context Protocol" returns generic healthcare-MCP
+  explainer content, nothing MEDITECH-specific; no GitHub org, no npm/pypi package). This is
+  a CANDIDATE tool list derived from the OpenAPI operations already modeled in this repo, for
+  governance planning only -- it does not exist as a running server.
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+tools:
+  - name: get_capability_statement
+    rest: getCapabilityStatement
+    method: get
+    path: /metadata
+    description: Get FHIR Capability Statement
+    inputSchema: {}
+  - name: search_patients
+    rest: searchPatients
+    method: get
+    path: /Patient
+    description: Search patients
+    inputSchema:
+      type: object
+      properties:
+        id: {type: string}
+        name: {type: string}
+        birthdate: {type: string}
+  - name: get_patient
+    rest: getPatient
+    method: get
+    path: /Patient/{id}
+    description: Get patient by ID
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_everything
+    rest: getPatientEverything
+    method: get
+    path: /Patient/{id}/$everything
+    description: Get all patient data (FHIR $everything)
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_allergies
+    rest: getPatientAllergies
+    method: get
+    path: /Patient/{id}/AllergyIntolerance
+    description: Get patient allergies and intolerances
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_conditions
+    rest: getPatientConditions
+    method: get
+    path: /Patient/{id}/Condition
+    description: Get patient conditions (problem list, diagnoses)
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_diagnostic_reports
+    rest: getPatientDiagnosticReports
+    method: get
+    path: /Patient/{id}/DiagnosticReport
+    description: Get patient diagnostic reports
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_encounters
+    rest: getPatientEncounters
+    method: get
+    path: /Patient/{id}/Encounter
+    description: Get patient encounters
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_medications
+    rest: getPatientMedications
+    method: get
+    path: /Patient/{id}/MedicationRequest
+    description: Get patient medication requests
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+  - name: get_patient_observations
+    rest: getPatientObservations
+    method: get
+    path: /Patient/{id}/Observation
+    description: Get patient observations (vital signs, lab results)
+    inputSchema:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+note: >-
+  All 10 candidate tools are read-only, matching the OpenAPI models in this repo. The real
+  Greenfield sandbox exposes 33 FHIR resources with 2 write-capable (Communication,
+  QuestionnaireResponse create/update) per
+  conformance/meditech-greenfield-conformance.yml -- those are not modeled as OpenAPI
+  operations in this repo yet, so no candidate tool is derived for them here rather than
+  inventing an inputSchema for an operation that doesn't exist in the spec.

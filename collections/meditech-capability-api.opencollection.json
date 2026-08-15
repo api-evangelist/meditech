@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Meditech Expanse FHIR R4 Allergy Capability API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://yourhospital.meditech.com/oauth/authorize",
+      "accessTokenUrl": "https://yourhospital.meditech.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Capability",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get FHIR Capability Statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/metadata"
+          },
+          "docs": "Returns the server's CapabilityStatement resource describing supported FHIR resources, interactions, and extensions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

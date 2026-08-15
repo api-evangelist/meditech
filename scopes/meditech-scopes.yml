@@ -1,52 +1,287 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/_original/meditech-fhir-openapi.yml
+generated: '2026-08-14'
+method: probed
+source: https://greenfield-prod-apis.meditech.com/.well-known/smart-configuration
+docs: https://greenfield.meditech.com/explorer/scope
 x-provenance:
-  reviewed: '2026-07-27'
-  origin: api-evangelist-derived
-  note: >-
-    These are standard SMART on FHIR scopes taken from an API Evangelist model of US Core
-    FHIR R4 — they are NOT a MEDITECH-published scope list, and may be broader than what
-    MEDITECH actually grants. MEDITECH publishes its real scope list in the Greenfield API
-    Explorer; it is rendered client-side on a robots-disallowed host, so it could not be
-    fetched. Transcribe it and replace this file.
-  reconcile_against: https://greenfield.meditech.com/explorer/scope
+  reviewed: '2026-08-14'
+  origin: first-party-probed
+  upgrade_note: 'This file previously carried only 5 scopes derived from an API Evangelist model of US
+    Core FHIR R4 (method: derived). It is now upgraded to the REAL, complete scope list MEDITECH''s own
+    Greenfield sandbox authorization server advertises, read live from its SMART-on-FHIR discovery document
+    on 2026-08-06/2026-08-14 (greenfield-prod-apis.meditech.com/.well-known/smart-configuration) after
+    API Evangelist was issued sandbox credentials on 2026-07-27. This is MEDITECH''s own server telling
+    us what it supports, not an inference from documentation. The Explorer''s human-readable scope reference
+    page (docs: above) could not be fetched -- it is a robots-disallowed, client-rendered Angular SPA
+    -- so this discovery document is the strongest available substitute for it, and arguably stronger
+    since it is the literal contract rather than prose describing one.'
+  caveat: 'scopes_supported on a discovery document is a statement of what the AUTHORIZATION SERVER will
+    grant if asked, not of what a given client is entitled to receive, and not all 581 scopes are meant
+    for third-party app developers. Roughly 173 begin with infr-/iops-/mis-/unv- prefixes that read as
+    MEDITECH-internal administrative and infrastructure scopes (e.g. infr-tls-config/*, iops-admin) --
+    grouped separately below rather than discarded, since we cannot confirm from outside MEDITECH which
+    of them a developer could ever be granted. The confirmed grant_reality documented in authentication/meditech-greenfield-oauth.yml
+    applies here too: client_credentials is ADVERTISED but was NOT enabled for the sandbox client actually
+    tested.'
+total_advertised: 581
 schemes:
 - name: SMART_OAuth2
-  source: openapi/_original/meditech-fhir-openapi.yml
+  source: well-known/meditech-greenfield-smart-configuration.json
   flows:
   - flow: authorizationCode
-    authorizationUrl: https://yourhospital.meditech.com/oauth/authorize
-    tokenUrl: https://yourhospital.meditech.com/oauth/token
-  description: SMART on FHIR OAuth 2.0 authorization
-scopes:
-- scope: fhirUser
-  description: FHIR user claim
-  flows:
-  - authorizationCode
-  sources:
-  - openapi/_original/meditech-fhir-openapi.yml
-- scope: launch
-  description: EHR launch context
-  flows:
-  - authorizationCode
-  sources:
-  - openapi/_original/meditech-fhir-openapi.yml
-- scope: openid
-  description: OpenID Connect identity
-  flows:
-  - authorizationCode
-  sources:
-  - openapi/_original/meditech-fhir-openapi.yml
-- scope: patient/*.read
-  description: Read access to all patient-owned resources
-  flows:
-  - authorizationCode
-  sources:
-  - openapi/_original/meditech-fhir-openapi.yml
-- scope: user/*.read
-  description: Practitioner read access to all resources
-  flows:
-  - authorizationCode
-  sources:
-  - openapi/_original/meditech-fhir-openapi.yml
+    authorizationUrl: https://greenfield-prod-apis.meditech.com/oauth/authorize
+    tokenUrl: https://greenfield-prod-apis.meditech.com/oauth/token
+  description: SMART on FHIR OAuth 2.0 authorization -- Greenfield Workspace sandbox (live, first-party)
+oidc_scopes:
+  description: Standard OpenID Connect scopes advertised alongside SMART launch context.
+  scopes:
+  - openid
+  - profile
+  - email
+  - phone
+  - address
+  - fhirUser
+  - online_access
+  - offline_access
+launch_context_scopes:
+  description: SMART launch-context scopes advertised by the sandbox authorization server.
+  scopes:
+  - launch
+  - launch/encounter
+  - launch/location
+  - launch/patient
+patient_read_scopes:
+  description: US Core / Argonaut resource-level patient/*.read scopes (38 advertised) -- the scopes a
+    patient-facing app actually needs.
+  count: 38
+  scopes:
+  - patient/*.read
+  - patient/AllergyIntolerance.read
+  - patient/Appointment.read
+  - patient/ArgoScheduling.read
+  - patient/Binary.read
+  - patient/CarePlan.read
+  - patient/CareTeam.read
+  - patient/Communication.read
+  - patient/Condition.read
+  - patient/Coverage.read
+  - patient/Device.read
+  - patient/DiagnosticReport.read
+  - patient/DocumentReference.read
+  - patient/Encounter.read
+  - patient/Goal.read
+  - patient/Group.read
+  - patient/Immunization.read
+  - patient/Location.read
+  - patient/Media.read
+  - patient/Medication.read
+  - patient/MedicationAdministration.read
+  - patient/MedicationDispense.read
+  - patient/MedicationOrder.read
+  - patient/MedicationRequest.read
+  - patient/MedicationStatement.read
+  - patient/Observation.read
+  - patient/Organization.read
+  - patient/Patient.read
+  - patient/Practitioner.read
+  - patient/PractitionerRole.read
+  - patient/Procedure.read
+  - patient/Provenance.read
+  - patient/QuestionnaireResponse.read
+  - patient/RelatedPerson.read
+  - patient/ServiceRequest.read
+  - patient/Specimen.read
+  - patient/Task.read
+  - patient/ValueSet.read
+patient_other_scopes:
+  description: Non-.read patient/* scopes advertised -- includes write-capable and combined-permission
+    forms (e.g. patient/Communication.write, patient/QuestionnaireResponse.crus) matching the two writable
+    resources confirmed live in conformance/meditech-greenfield-conformance.yml (Communication, QuestionnaireResponse),
+    plus legacy Argonaut-shorthand scopes MEDITECH still advertises (e.g. patient/Condition.rs) that this
+    repo has not independently confirmed grant.
+  count: 41
+  scopes:
+  - patient/AllergyIntolerance.rs
+  - patient/ArgoScheduling.*
+  - patient/Binary.r
+  - patient/CarePlan.rs
+  - patient/CareTeam.rs
+  - patient/Communication.crs
+  - patient/Communication.write
+  - patient/Condition.crs
+  - patient/Coverage.rs
+  - patient/Device.rs
+  - patient/DiagnosticReport.rs
+  - patient/DocumentReference.crus
+  - patient/DocumentReference.write
+  - patient/Encounter.rs
+  - patient/Goal.rs
+  - patient/Group.crus
+  - patient/Immunization.rs
+  - patient/Location.rs
+  - patient/Media.r
+  - patient/Medication.rs
+  - patient/MedicationAdministration.rs
+  - patient/MedicationDispense.rs
+  - patient/MedicationRequest.rs
+  - patient/MedicationStatement.rs
+  - patient/Observation.crus
+  - patient/Observation.write
+  - patient/Organization.rs
+  - patient/Patient.crus
+  - patient/Person.rs
+  - patient/Practitioner.rs
+  - patient/PractitionerRole.rs
+  - patient/Procedure.rs
+  - patient/Provenance.rs
+  - patient/QuestionnaireResponse.crus
+  - patient/QuestionnaireResponse.write
+  - patient/RelatedPerson.rs
+  - patient/ServiceRequest.rs
+  - patient/Specimen.rs
+  - patient/Task.rs
+  - patient/Task.write
+  - patient/ValueSet.r
+user_read_scopes:
+  description: Practitioner-context user/*.read scopes (38 advertised).
+  count: 38
+  scopes:
+  - user/AllergyIntolerance.read
+  - user/Appointment.read
+  - user/Binary.read
+  - user/CarePlan.read
+  - user/CareTeam.read
+  - user/Communication.read
+  - user/Condition.read
+  - user/Coverage.read
+  - user/Device.read
+  - user/DiagnosticReport.read
+  - user/DocumentReference.read
+  - user/Encounter.read
+  - user/Goal.read
+  - user/Group.read
+  - user/Immunization.read
+  - user/Location.read
+  - user/Media.read
+  - user/Medication.read
+  - user/MedicationAdministration.read
+  - user/MedicationDispense.read
+  - user/MedicationOrder.read
+  - user/MedicationRequest.read
+  - user/MedicationStatement.read
+  - user/Observation.read
+  - user/Organization.read
+  - user/Patient.read
+  - user/Practitioner.read
+  - user/PractitionerRole.read
+  - user/Procedure.read
+  - user/Provenance.read
+  - user/QuestionnaireResponse.read
+  - user/RelatedPerson.read
+  - user/ServiceRequest.read
+  - user/Specimen.read
+  - user/Task.read
+  - user/ValueSet.read
+  - user/metadata.read
+  - user/wellknown.read
+system_scopes:
+  description: 'system/* scopes (75 advertised) for backend/client_credentials access. CAUTION: authentication/meditech-greenfield-oauth.yml
+    documents that client_credentials was tested and returned HTTP 400 unauthorized_client for the issued
+    sandbox client -- these scopes are advertised, not confirmed grantable in the complimentary sandbox
+    tier.'
+  count: 75
+  scopes:
+  - system/AllergyIntolerance.rs
+  - system/Binary.r
+  - system/CarePlan.rs
+  - system/CareTeam.rs
+  - system/Communication.crs
+  - system/Condition.crs
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/condition-category|health-concern
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|care-experience-preference
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|cognitive-status
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|disability-status
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|functional-status
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh
+  - system/Condition.crs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|treatment-intervention-preference
+  - system/Condition.crs?category=http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis
+  - system/Condition.crs?category=http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item
+  - system/Coverage.rs
+  - system/Device.rs
+  - system/DiagnosticReport.rs
+  - system/DiagnosticReport.rs?category=http://loinc.org|LP29684-5
+  - system/DiagnosticReport.rs?category=http://loinc.org|LP29708-2
+  - system/DiagnosticReport.rs?category=http://loinc.org|LP7839-6
+  - system/DiagnosticReport.rs?category=http://terminology.hl7.org/CodeSystem/v2-0074|LAB
+  - system/DocumentReference.crus
+  - system/DocumentReference.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category|clinical-note
+  - system/Encounter.rs
+  - system/Goal.rs
+  - system/Group.crus
+  - system/Immunization.rs
+  - system/Location.rs
+  - system/Media.r
+  - system/Medication.rs
+  - system/MedicationAdministration.rs
+  - system/MedicationDispense.rs
+  - system/MedicationRequest.rs
+  - system/MedicationStatement.rs
+  - system/Observation.crus
+  - system/Observation.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|care-experience-preference
+  - system/Observation.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|cognitive-status
+  - system/Observation.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|disability-status
+  - system/Observation.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|functional-status
+  - system/Observation.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh
+  - system/Observation.crus?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|treatment-intervention-preference
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|activity
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|imaging
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|laboratory
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|procedure
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|social-history
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|survey
+  - system/Observation.crus?category=http://terminology.hl7.org/CodeSystem/observation-category|vital-signs
+  - system/Organization.rs
+  - system/Patient.crus
+  - system/Person.rs
+  - system/Practitioner.rs
+  - system/PractitionerRole.rs
+  - system/Procedure.rs
+  - system/Provenance.rs
+  - system/QuestionnaireResponse.crus
+  - system/RelatedPerson.rs
+  - system/ServiceRequest.rs
+  - system/ServiceRequest.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|care-experience-preference
+  - system/ServiceRequest.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|cognitive-status
+  - system/ServiceRequest.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|disability-status
+  - system/ServiceRequest.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|functional-status
+  - system/ServiceRequest.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|sdoh
+  - system/ServiceRequest.rs?category=http://hl7.org/fhir/us/core/CodeSystem/us-core-category|treatment-intervention-preference
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|108252007
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|363679005
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|386053000
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|387713003
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|409063005
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|409073007
+  - system/ServiceRequest.rs?category=http://snomed.info/sct|410606002
+  - system/Specimen.rs
+  - system/Task.rs
+  - system/ValueSet.r
+internal_administrative_scopes_count: 377
+internal_administrative_scopes_note: The remainder are infr-*/iops-*/mis-*/unv-* prefixed scopes that
+  read as MEDITECH-internal infrastructure/administration surface, not third-party app scopes. Full raw
+  list preserved verbatim in well-known/meditech-greenfield-smart-configuration.json (scopes_supported)
+  rather than duplicated here.
+legacy_model_scopes:
+  note: The 5 scopes below are what this repo previously derived from an API Evangelist model of US Core
+    FHIR R4 (openapi/*-openapi.yml), kept for traceability. They are a strict subset of the confirmed
+    live list above.
+  scopes:
+  - scope: fhirUser
+    description: FHIR user claim
+  - scope: launch
+    description: EHR launch context
+  - scope: openid
+    description: OpenID Connect identity
+  - scope: patient/*.read
+    description: Read access to all patient-owned resources
+  - scope: user/*.read
+    description: Practitioner read access to all resources

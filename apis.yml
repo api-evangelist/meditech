@@ -361,10 +361,63 @@ common:
     type: PostmanCollection
   - url: collections/meditech-fhir.opencollection.json
     type: OpenCollection
+  - type: WellKnown
+    url: well-known/meditech-well-known.yml
+  - type: MCPServer
+    url: mcp/meditech-mcp.yml
+  - type: LLMsTxt
+    url: llms/meditech-llms.txt
+  - type: Overlay
+    url: overlays/meditech-allergy-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-capability-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-condition-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-diagnostic-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-encounter-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-medication-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-observation-api-overlay.yaml
+  - type: Overlay
+    url: overlays/meditech-patient-api-overlay.yaml
+  - type: ErrorCatalog
+    url: errors/meditech-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/meditech-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/meditech-changelog.yml
+  - type: TrustCenter
+    url: security/meditech-trust-center.yml
+  - type: Compliance
+    url: security/meditech-trust-center.yml
+  - type: Sandbox
+    url: sandbox/meditech-sandbox.yml
+  - type: Conventions
+    url: conventions/meditech-conventions.yml
+  - type: DataModel
+    url: data-model/meditech-data-model.yml
+  - type: Plans
+    url: plans/meditech-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/meditech-rate-limits.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - url: https://home.meditech.com/en/d/restapiresources/pages/apidoc.htm
+    type: Documentation
+  - url: https://home.meditech.com/en/d/restapiresources/pages/apiterms.htm
+    type: TermsOfService
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 created: '2026-05-04'
-modified: '2026-07-27'
+modified: '2026-08-14'
+x-enrichment:
+  date: '2026-08-14'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1

@@ -1,0 +1,64 @@
+generated: '2026-08-14'
+method: searched
+source:
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+  - https://ehr.meditech.com/ehr-solutions/how-to-work-in-the-greenfield-workspace
+  - authentication/meditech-greenfield-oauth.yml
+  - conformance/meditech-greenfield-conformance.yml
+description: >-
+  MEDITECH's sandbox IS the Greenfield Workspace itself -- there is no separate named "test
+  mode" alongside a "live mode" the way a payments API has test/live key prefixes. Consolidates
+  sandbox facts this repo already verified first-hand (issued credentials, 2026-07-27) rather
+  than re-deriving them.
+environment:
+  name: Greenfield Workspace
+  tier: complimentary developer sandbox
+  cost: free (MEDITECH's own materials describe it as "complimentary")
+  data: >-
+    Executes against a REAL MEDITECH EHR instance, not synthetic/mock data -- MEDITECH's own
+    developer pages state apps are tested "against a real MEDITECH EHR."
+  onboarding: >-
+    Registration request (iFiller form) reviewed by MEDITECH; not self-serve/instant signup.
+    See accessModel in apis.yml.
+key_modes:
+  test_vs_live: not-applicable
+  note: >-
+    No test-key/live-key prefix distinction was found or documented. Sandbox access issues an
+    OAuth client id + secret scoped to the sandbox tenant (greenfield-prod-apis.meditech.com),
+    not a differently-prefixed credential pair for a separate live mode.
+credentials:
+  type: OAuth 2.0 client id + secret (not a username/password login)
+  issued_for: Greenfield Workspace sandbox tenant only
+  verified: >-
+    Tested first-hand on 2026-07-27/2026-08-06 with credentials issued to API Evangelist.
+    client_credentials grant is ADVERTISED in the discovery document but returns HTTP 400
+    unauthorized_client for the issued sandbox client -- see
+    authentication/meditech-greenfield-oauth.yml grant_reality for the full evidence
+    (including the 401 invalid_client control that distinguishes "wrong secret" from
+    "grant not authorized").
+usable_grant:
+  flow: authorization_code
+  pkce: S256
+  scope_default: patient/*.read (wildcard, enabled for exploratory testing only per MEDITECH)
+test_data:
+  synthetic_test_patients: not documented
+  test_cards_or_tokens: not-applicable (not a payments API)
+  test_clocks_or_time_simulation: not documented
+  fixture_or_trigger_tooling: not documented
+  note: >-
+    MEDITECH's public materials do not describe a synthetic-patient fixture library or a
+    trigger/webhook-simulation tool for Greenfield. Given the sandbox runs against a live EHR
+    rather than fixtures, this absence is plausible rather than a documentation gap -- but it
+    is unconfirmed either way and recorded honestly as "not documented," not "does not exist."
+resource_scope:
+  writable_in_sandbox:
+    - {resource: Communication, interactions: [read, search-type, create]}
+    - {resource: QuestionnaireResponse, interactions: [read, search-type, create, update]}
+  read_only_resource_count: 31
+  source: conformance/meditech-greenfield-conformance.yml (live CapabilityStatement, 2026-08-06)
+production_path:
+  note: >-
+    Production/customer-facility deployment is a SEPARATE, formal onboarding process reviewed
+    by MEDITECH per customer -- not reachable through Greenfield registration. See
+    apis.yml x-capabilities.surfaces for the FHIR Scheduling / Argo-Scheduling distinction
+    between Greenfield and customer-sponsored production integration.

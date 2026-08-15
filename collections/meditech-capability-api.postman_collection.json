@@ -1,0 +1,154 @@
+{
+  "item": [
+    {
+      "id": "fdf59145-615d-42a4-92bc-02e5865a95c9",
+      "name": "Capability",
+      "description": {
+        "content": "FHIR server capability",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7c2c72d4-e0bc-43e6-bb5d-350e02982d8c",
+          "name": "Get FHIR Capability Statement",
+          "request": {
+            "name": "Get FHIR Capability Statement",
+            "description": {
+              "content": "Returns the server's CapabilityStatement resource describing supported FHIR resources, interactions, and extensions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metadata"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your Meditech facility subdomain",
+                  "type": "any",
+                  "value": "{{facility}}",
+                  "key": "facility"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8a16274c-7bd4-4deb-a0c4-3810aea6913a",
+              "name": "FHIR CapabilityStatement",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"CapabilityStatement\",\n  \"status\": \"string\",\n  \"date\": \"1990-01-15T03:51:19.068Z\",\n  \"fhirVersion\": \"string\",\n  \"format\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Meditech facility subdomain",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "yourhospital",
+      "key": "facility"
+    },
+    {
+      "type": "string",
+      "value": "https://{{facility}}.meditech.com/fhir/r4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "patient/*.read user/*.read launch openid fhirUser"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://yourhospital.meditech.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://yourhospital.meditech.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "972502f2-64c6-46f0-b36e-89eeb6a6d054",
+    "name": "Meditech Expanse FHIR R4 Allergy Capability API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.\n\nContact Support:\n Name: Meditech Support",
+      "type": "text/plain"
+    }
+  }
+}

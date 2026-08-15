@@ -1,0 +1,22 @@
+generated: '2026-08-14'
+method: generated
+description: >-
+  Index of API Evangelist-authored Agent Skills for MEDITECH's Greenfield US Core FHIR R4 API.
+  No MEDITECH-published AGENTS.md or skills file was found (searched greenfield.meditech.com,
+  ehr.meditech.com -- neither publishes one), so these are generated, grounded in the real
+  operationIds present in openapi/*.yml.
+skills:
+  - file: meditech-patient-clinical-summary.md
+    name: meditech-patient-clinical-summary
+    operations: [getPatient, getPatientEverything]
+  - file: meditech-patient-record-search.md
+    name: meditech-patient-record-search
+    operations:
+      - searchPatients
+      - getPatient
+      - getPatientAllergies
+      - getPatientConditions
+      - getPatientDiagnosticReports
+      - getPatientEncounters
+      - getPatientMedications
+      - getPatientObservations

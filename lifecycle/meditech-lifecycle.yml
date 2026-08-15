@@ -1,0 +1,64 @@
+generated: '2026-08-14'
+method: searched
+source:
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+  - https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
+  - https://ehr.meditech.com/news-tags/expanse-updates
+  - conformance/meditech-greenfield-conformance.yml
+description: >-
+  Versioning, deprecation, SLA and status-page posture for MEDITECH's Greenfield API program,
+  read from MEDITECH's public pages plus this repo's own first-party CapabilityStatement probe.
+versioning:
+  scheme: fhir-implementation-guide-version
+  current: 'US Core STU6 FHIR R4 2.0.0'
+  evidence: >-
+    Read live from https://greenfield-prod-apis.meditech.com/v2/uscore/STU6/metadata on
+    2026-08-06 -- CapabilityStatement.software = "Interoperability Services: US Core STU6 FHIR
+    R4 2.0.0", fhirVersion 4.0.1, publisher_date 2023-05-25. The /v2/uscore/STU6 path segment
+    itself signals MEDITECH versions the FHIR surface by implementation-guide release (STU6),
+    not by a semantic API version number.
+  note: >-
+    MEDITECH's marketing describes FHIR Scheduling APIs as "coming soon" while the live
+    CapabilityStatement already exposes Appointment read/search-type -- documented as a
+    contract-vs-marketing disagreement in apis.yml x-capabilities. No published migration
+    timeline from DSTU2/Argonaut to R4/US Core was found; both are described as
+    "DSTU2/R4 compatible" on the same program.
+deprecation_policy:
+  published: false
+  evidence_checked:
+    - url: https://ehr.meditech.com/ehr-solutions/greenfield-workspace
+      status: 200
+    - url: https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources
+      status: 200
+  note: >-
+    No Sunset/Deprecation HTTP header policy (RFC 8594) or written API deprecation policy was
+    found on any public MEDITECH page. Absence recorded, not assumed.
+sla:
+  published: false
+  note: >-
+    No public SLA/uptime commitment for the Greenfield sandbox or production FHIR endpoints
+    was found. The program is explicitly a "complimentary" developer sandbox
+    (authentication/meditech-greenfield-oauth.yml), which is consistent with no formal SLA.
+status_page:
+  published: false
+  evidence_checked:
+    - url: https://status.meditech.com
+      status: 0
+      note: DNS does not resolve.
+    - url: https://meditech.statuspage.io
+      status: 302
+      note: Resolves to Atlassian Statuspage's own marketing site, not a claimed MEDITECH status page -- an unclaimed subdomain, not a MEDITECH status surface.
+  note: >-
+    The only "status" page found (Sierra View Medical Center's status.sierra-view.com) belongs
+    to a MEDITECH CUSTOMER hospital monitoring its own instance, not to MEDITECH itself. Not
+    counted as a MEDITECH-published status page.
+changelog:
+  published: false
+  nearest_surface: https://ehr.meditech.com/news-tags/expanse-updates
+  note: >-
+    That page is a general company news/blog feed (implementation stories, AI announcements),
+    not a dated, versioned API changelog. See changelog/meditech-changelog.yml.
+deprecated_operations: []
+deprecated_operations_note: >-
+  None of the 10 operations modeled in openapi/ carry a deprecated flag, and MEDITECH's own
+  CapabilityStatement (probed 2026-08-06) does not mark any of its 33 resources deprecated.

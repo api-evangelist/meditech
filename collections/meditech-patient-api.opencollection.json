@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Meditech Expanse FHIR R4 Allergy Patient API",
+    "version": "4.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://yourhospital.meditech.com/oauth/authorize",
+      "accessTokenUrl": "https://yourhospital.meditech.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Patient",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search patients",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "query",
+                "description": "MRN or other identifier (e.g., identifier=MR|12345)"
+              },
+              {
+                "name": "family",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "given",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "birthdate",
+                "value": "",
+                "type": "query",
+                "description": "FHIR date parameter (e.g., birthdate=1980-01-01)"
+              },
+              {
+                "name": "gender",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "_format",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search for patient records using FHIR search parameters including name, birthdate, identifier, and gender. Implements US Core Patient profile."
+        },
+        {
+          "info": {
+            "name": "Get patient by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific patient resource by FHIR logical ID."
+        },
+        {
+          "info": {
+            "name": "Get all patient data (Patient $everything)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{facility}.meditech.com/fhir/r4/Patient/:id/$everything",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns all resources related to a patient in a single Bundle. Implements the FHIR $everything operation for bulk patient data access."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

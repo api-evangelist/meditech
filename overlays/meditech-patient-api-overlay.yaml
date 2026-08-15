@@ -1,0 +1,53 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for Meditech Expanse FHIR R4 Allergy Patient API
+  version: 1.0.0
+  x-provenance:
+    generated: '2026-08-14'
+    method: generated
+    origin: api-evangelist-derived
+    note: Adds standard FHIR error responses (401 on every operation; 404 on single-resource reads) that
+      the API Evangelist-derived US Core R4 model omits, plus a pointer to the x-agentic-access classification
+      kept separately in agentic-access/meditech-agentic-access.yml. Never mutates openapi/meditech-patient-api-openapi.yml
+      directly -- apply with an Overlay 1.0.0-compatible tool.
+extends: ../openapi/meditech-patient-api-openapi.yml
+actions:
+- target: $.paths['/Patient'].get
+  description: Cross-reference the x-agentic-access classification API Evangelist maintains for searchPatients
+    (see agentic-access/meditech-agentic-access.yml) rather than duplicating it inline.
+  update:
+    x-agentic-access-ref: ../agentic-access/meditech-agentic-access.yml#searchPatients
+- target: $.paths['/Patient/{id}'].get.responses
+  description: Add standard FHIR error responses missing from the source model for getPatient.
+  update:
+    '401':
+      description: Unauthorized -- missing or invalid SMART on FHIR bearer token.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+- target: $.paths['/Patient/{id}'].get
+  description: Cross-reference the x-agentic-access classification API Evangelist maintains for getPatient
+    (see agentic-access/meditech-agentic-access.yml) rather than duplicating it inline.
+  update:
+    x-agentic-access-ref: ../agentic-access/meditech-agentic-access.yml#getPatient
+- target: $.paths['/Patient/{id}/$everything'].get.responses
+  description: Add standard FHIR error responses missing from the source model for getPatientEverything.
+  update:
+    '401':
+      description: Unauthorized -- missing or invalid SMART on FHIR bearer token.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+    '404':
+      description: Resource not found.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+- target: $.paths['/Patient/{id}/$everything'].get
+  description: Cross-reference the x-agentic-access classification API Evangelist maintains for getPatientEverything
+    (see agentic-access/meditech-agentic-access.yml) rather than duplicating it inline.
+  update:
+    x-agentic-access-ref: ../agentic-access/meditech-agentic-access.yml#getPatientEverything

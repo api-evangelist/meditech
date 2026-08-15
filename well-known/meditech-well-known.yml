@@ -1,0 +1,145 @@
+generated: '2026-08-14'
+method: probed
+description: >-
+  Index of .well-known/ discovery probes run across every host in this repo's apis.yml
+  (greenfield.meditech.com, greenfield-prod-apis.meditech.com, fhir.meditech.com,
+  ehr.meditech.com, www.meditech.com). Records every path attempted and what actually came
+  back, including deliberate misses -- an honest absence is valid data.
+x-methodology: >-
+  greenfield.meditech.com, fhir.meditech.com and www.meditech.com are Angular single-page
+  apps (or a redirect chain landing on one): EVERY path on them, including ones that don't
+  exist, returns the identical index.html shell with HTTP 200 and content-type text/html.
+  That is confirmed here directly -- llms.txt, agent-card.json, agent.json and security.txt
+  on greenfield.meditech.com all returned 200 with byte-identical Angular boot HTML, and
+  fhir.meditech.com's openapi.json / metadata / smart-configuration paths all returned a
+  client-side redirect stub pointing at greenfield.meditech.com. Per the pipeline's
+  false-positive rule, a 200 that returns an HTML/SPA shell is recorded as a miss, not a hit.
+  greenfield-prod-apis.meditech.com is the one host in this set that answers with real JSON.
+probes:
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/smart-configuration
+    status: 200
+    content_type: application/json
+    result: hit
+    file: well-known/meditech-greenfield-smart-configuration.json
+    note: SMART-on-FHIR discovery document. Previously harvested 2026-08-06; re-verified live 2026-08-14.
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    result: hit
+    file: well-known/meditech-greenfield-openid-configuration.json
+    note: >-
+      Standard OIDC discovery document, distinct from smart-configuration (adds
+      userinfo_endpoint and id_token/introspection/revocation signing-alg metadata not
+      present in the SMART document). New find this pass.
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/oauth-authorization-server
+    status: 404
+    result: miss
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/oauth-protected-resource
+    status: 404
+    result: miss
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/security.txt
+    status: 404
+    result: miss
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/ai-plugin.json
+    status: 404
+    result: miss
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/api-catalog
+    status: 404
+    result: miss
+  - host: greenfield-prod-apis.meditech.com
+    path: /.well-known/agent-card.json
+    status: 404
+    result: miss
+  - host: greenfield-prod-apis.meditech.com
+    path: /robots.txt
+    status: 200
+    result: informational
+    note: 'Disallow: / -- whole host is robots-disallowed; anonymous discovery-doc fetches taken as a targeted, first-party read, not a crawl.'
+  - host: greenfield.meditech.com
+    path: /llms.txt
+    status: 200
+    content_type: text/html
+    result: miss
+    note: SPA catch-all shell (Angular boot HTML), not a real llms.txt. False-positive avoided.
+  - host: greenfield.meditech.com
+    path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    result: miss
+    note: SPA catch-all shell, same as above. No AgentCard JSON body -- confirms STEP 0b's dominant false-positive case.
+  - host: greenfield.meditech.com
+    path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    result: miss
+    note: SPA catch-all shell.
+  - host: greenfield.meditech.com
+    path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    result: miss
+    note: SPA catch-all shell.
+  - host: greenfield.meditech.com
+    path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    result: miss
+    note: SPA catch-all shell (inferred consistent with every other path on this host).
+  - host: fhir.meditech.com
+    path: /openapi.json
+    status: 200
+    content_type: text/html
+    result: miss
+    note: >-
+      Client-side JS redirect stub ("window.location.replace('https://greenfield.meditech.com' + path)")
+      -- fhir.meditech.com is a legacy alias host for the same Greenfield Angular app, not an
+      independent API surface. robots.txt on this host is also Disallow: /.
+  - host: fhir.meditech.com
+    path: /.well-known/smart-configuration
+    status: 200
+    content_type: text/html
+    result: miss
+    note: same client-side redirect stub.
+  - host: fhir.meditech.com
+    path: /metadata
+    status: 200
+    content_type: text/html
+    result: miss
+    note: same client-side redirect stub.
+  - host: ehr.meditech.com
+    path: /.well-known/security.txt
+    status: 404
+    result: miss
+  - host: ehr.meditech.com
+    path: /.well-known/ai-plugin.json
+    status: 404
+    result: miss
+  - host: ehr.meditech.com
+    path: /.well-known/api-catalog
+    status: 404
+    result: miss
+  - host: ehr.meditech.com
+    path: /.well-known/agent-card.json
+    status: 404
+    result: miss
+  - host: ehr.meditech.com
+    path: /llms.txt
+    status: 404
+    result: miss
+  - host: www.meditech.com
+    path: /llms.txt
+    status: 302_then_200
+    result: miss
+    note: 302 redirect to ehr.meditech.com/page-not-found, which itself 200s -- a soft-404, not a real document. Same for security.txt, agent-card.json, ai-plugin.json on this host.
+summary:
+  real_hits: 2
+  spa_shell_false_positives_avoided: 8
+  soft_404_false_positives_avoided: 4
+  plain_404s: 8

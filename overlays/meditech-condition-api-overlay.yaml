@@ -1,0 +1,34 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for Meditech Expanse FHIR R4 Allergy Condition API
+  version: 1.0.0
+  x-provenance:
+    generated: '2026-08-14'
+    method: generated
+    origin: api-evangelist-derived
+    note: Adds standard FHIR error responses (401 on every operation; 404 on single-resource reads) that
+      the API Evangelist-derived US Core R4 model omits, plus a pointer to the x-agentic-access classification
+      kept separately in agentic-access/meditech-agentic-access.yml. Never mutates openapi/meditech-condition-api-openapi.yml
+      directly -- apply with an Overlay 1.0.0-compatible tool.
+extends: ../openapi/meditech-condition-api-openapi.yml
+actions:
+- target: $.paths['/Patient/{id}/Condition'].get.responses
+  description: Add standard FHIR error responses missing from the source model for getPatientConditions.
+  update:
+    '401':
+      description: Unauthorized -- missing or invalid SMART on FHIR bearer token.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+    '404':
+      description: Resource not found.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+- target: $.paths['/Patient/{id}/Condition'].get
+  description: Cross-reference the x-agentic-access classification API Evangelist maintains for getPatientConditions
+    (see agentic-access/meditech-agentic-access.yml) rather than duplicating it inline.
+  update:
+    x-agentic-access-ref: ../agentic-access/meditech-agentic-access.yml#getPatientConditions

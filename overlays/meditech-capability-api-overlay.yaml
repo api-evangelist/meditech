@@ -1,0 +1,27 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for Meditech Expanse FHIR R4 Allergy Capability API
+  version: 1.0.0
+  x-provenance:
+    generated: '2026-08-14'
+    method: generated
+    origin: api-evangelist-derived
+    note: >-
+      Unlike the other operation overlays in this repo, this one does NOT add a 401 response --
+      conformance/meditech-greenfield-conformance.yml records first-hand evidence that
+      GET /metadata answers anonymously (HTTP 200, confirmed live on 2026-08-06 against
+      greenfield-prod-apis.meditech.com, with GET /Patient on the same host returning 401 as a
+      control). Adding an auth-required response here would contradict verified behaviour.
+      Adds only a pointer to the x-agentic-access classification kept separately in
+      agentic-access/meditech-agentic-access.yml. Never mutates
+      openapi/meditech-capability-api-openapi.yml directly -- apply with an
+      Overlay 1.0.0-compatible tool.
+extends: ../openapi/meditech-capability-api-openapi.yml
+actions:
+  - target: $.paths['/metadata'].get
+    description: >-
+      Cross-reference the x-agentic-access classification API Evangelist maintains for
+      getCapabilityStatement (see agentic-access/meditech-agentic-access.yml) rather than
+      duplicating it inline.
+    update:
+      x-agentic-access-ref: ../agentic-access/meditech-agentic-access.yml#getCapabilityStatement

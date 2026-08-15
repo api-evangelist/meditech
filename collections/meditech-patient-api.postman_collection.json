@@ -1,0 +1,596 @@
+{
+  "item": [
+    {
+      "id": "fc115860-1fca-418e-8957-ccbb909a8511",
+      "name": "Patient",
+      "description": {
+        "content": "US Core Patient resources",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b8fb620a-b631-4043-8ee3-d16edbc8f309",
+          "name": "Search patients",
+          "request": {
+            "name": "Search patients",
+            "description": {
+              "content": "Search for patient records using FHIR search parameters including name, birthdate, identifier, and gender. Implements US Core Patient profile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Patient"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "identifier",
+                  "value": "<string>",
+                  "description": "MRN or other identifier (e.g., identifier=MR|12345)"
+                },
+                {
+                  "disabled": false,
+                  "key": "family",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "given",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "birthdate",
+                  "value": "<string>",
+                  "description": "FHIR date parameter (e.g., birthdate=1980-01-01)"
+                },
+                {
+                  "disabled": false,
+                  "key": "gender",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "_count",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "_format",
+                  "value": "json"
+                }
+              ],
+              "variable": [
+                {
+                  "description": "Your Meditech facility subdomain",
+                  "type": "any",
+                  "value": "{{facility}}",
+                  "key": "facility"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f3098b73-a127-4bd9-b3cc-c3f48c3da69a",
+              "name": "Bundle of matching Patient resources",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "identifier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "family",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "given",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "birthdate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "_count",
+                      "value": "20"
+                    },
+                    {
+                      "key": "_format",
+                      "value": "json"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"Bundle\",\n  \"id\": \"string\",\n  \"type\": \"collection\",\n  \"total\": 4155,\n  \"link\": [\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"entry\": [\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": 479,\n        \"key_1\": 7284,\n        \"key_2\": 3113.618770219272,\n        \"key_3\": true\n      }\n    },\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75c7ee5c-aba4-421a-88a4-8bf31a64568e",
+              "name": "SMART on FHIR authorization required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "identifier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "family",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "given",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "birthdate",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "gender",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "_count",
+                      "value": "20"
+                    },
+                    {
+                      "key": "_format",
+                      "value": "json"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"OperationOutcome\",\n  \"issue\": [\n    {\n      \"severity\": \"information\",\n      \"code\": \"string\",\n      \"diagnostics\": \"string\"\n    },\n    {\n      \"severity\": \"fatal\",\n      \"code\": \"string\",\n      \"diagnostics\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1cbcb41d-5611-45dd-94be-59dee998622c",
+          "name": "Get patient by ID",
+          "request": {
+            "name": "Get patient by ID",
+            "description": {
+              "content": "Retrieve a specific patient resource by FHIR logical ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Patient",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "Your Meditech facility subdomain",
+                  "type": "any",
+                  "value": "{{facility}}",
+                  "key": "facility"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "15712b32-fbfd-4d5e-9f4e-7683fc18d1a3",
+              "name": "Patient resource",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"Patient\",\n  \"id\": \"string\",\n  \"meta\": {\n    \"versionId\": \"string\",\n    \"lastUpdated\": \"1986-09-24T14:34:11.840Z\",\n    \"profile\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"identifier\": [\n    {\n      \"use\": \"string\",\n      \"type\": {\n        \"coding\": [\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          },\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          }\n        ]\n      },\n      \"system\": \"string\",\n      \"value\": \"string\"\n    },\n    {\n      \"use\": \"string\",\n      \"type\": {\n        \"coding\": [\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          },\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          }\n        ]\n      },\n      \"system\": \"string\",\n      \"value\": \"string\"\n    }\n  ],\n  \"active\": false,\n  \"name\": [\n    {\n      \"use\": \"anonymous\",\n      \"family\": \"string\",\n      \"given\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    {\n      \"use\": \"usual\",\n      \"family\": \"string\",\n      \"given\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  ],\n  \"telecom\": [\n    {\n      \"system\": \"fax\",\n      \"value\": \"string\",\n      \"use\": \"home\"\n    },\n    {\n      \"system\": \"fax\",\n      \"value\": \"string\",\n      \"use\": \"mobile\"\n    }\n  ],\n  \"gender\": \"other\",\n  \"birthDate\": \"1956-06-11\",\n  \"deceasedBoolean\": false,\n  \"deceasedDateTime\": \"1994-09-22T06:03:36.754Z\",\n  \"address\": [\n    {\n      \"use\": \"string\",\n      \"line\": [\n        \"string\",\n        \"string\"\n      ],\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"string\"\n    },\n    {\n      \"use\": \"string\",\n      \"line\": [\n        \"string\",\n        \"string\"\n      ],\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"postalCode\": \"string\",\n      \"country\": \"string\"\n    }\n  ],\n  \"communication\": [\n    {\n      \"language\": {\n        \"coding\": [\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          },\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          }\n        ]\n      }\n    },\n    {\n      \"language\": {\n        \"coding\": [\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          },\n          {\n            \"system\": \"string\",\n            \"code\": \"string\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "083a25ea-8dc7-4041-8e2d-52b38621b816",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"OperationOutcome\",\n  \"issue\": [\n    {\n      \"severity\": \"information\",\n      \"code\": \"string\",\n      \"diagnostics\": \"string\"\n    },\n    {\n      \"severity\": \"fatal\",\n      \"code\": \"string\",\n      \"diagnostics\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "24b6d575-e6d9-4279-857f-6cea837b1dfd",
+          "name": "Get all patient data (Patient $everything)",
+          "request": {
+            "name": "Get all patient data (Patient $everything)",
+            "description": {
+              "content": "Returns all resources related to a patient in a single Bundle. Implements the FHIR $everything operation for bulk patient data access.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Patient",
+                ":id",
+                "$everything"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<date>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "Your Meditech facility subdomain",
+                  "type": "any",
+                  "value": "{{facility}}",
+                  "key": "facility"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "23e8dae1-7a5d-46b1-beeb-3693fd1fcb4d",
+              "name": "Bundle containing all patient-linked resources",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Patient",
+                    ":id",
+                    "$everything"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "Your Meditech facility subdomain",
+                      "type": "any",
+                      "value": "{{facility}}",
+                      "key": "facility"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/fhir+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/fhir+json"
+                }
+              ],
+              "body": "{\n  \"resourceType\": \"Bundle\",\n  \"id\": \"string\",\n  \"type\": \"collection\",\n  \"total\": 4155,\n  \"link\": [\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"relation\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"entry\": [\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": 479,\n        \"key_1\": 7284,\n        \"key_2\": 3113.618770219272,\n        \"key_3\": true\n      }\n    },\n    {\n      \"fullUrl\": \"string\",\n      \"resource\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Meditech facility subdomain",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "yourhospital",
+      "key": "facility"
+    },
+    {
+      "type": "string",
+      "value": "https://{{facility}}.meditech.com/fhir/r4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "patient/*.read user/*.read launch openid fhirUser"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://yourhospital.meditech.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://yourhospital.meditech.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "db3f6724-cd58-48c0-8014-534ebec5bd14",
+    "name": "Meditech Expanse FHIR R4 Allergy Patient API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Meditech Expanse FHIR API enables standards-based interoperability for sharing patient data across healthcare systems. Supports TEFCA-aligned data exchange through the Traverse Exchange national network, connecting over 700 facilities across 41 US states. Built on HL7 FHIR R4 standards.\n\nContact Support:\n Name: Meditech Support",
+      "type": "text/plain"
+    }
+  }
+}

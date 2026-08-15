@@ -1,0 +1,74 @@
+generated: '2026-08-14'
+method: derived
+source:
+  - openapi/_original/meditech-fhir-openapi.yml
+  - authentication/meditech-greenfield-oauth.yml
+  - errors/meditech-problem-types.yml
+  - live response headers observed probing greenfield-prod-apis.meditech.com and greenfield.meditech.com on 2026-08-14
+description: >-
+  Cross-cutting runtime semantics for MEDITECH's Greenfield FHIR API, derived from the OpenAPI
+  models in this repo plus live response headers observed during this pass's probes. FHIR
+  conventions (Bundle pagination, OperationOutcome errors) are standard for the profile
+  MEDITECH implements (US Core R4), not MEDITECH-specific inventions.
+auth:
+  style: SMART on FHIR OAuth 2.0, authorization_code + PKCE (S256)
+  see: authentication/meditech-greenfield-oauth.yml
+idempotency:
+  supported: false
+  header: none
+  note: >-
+    No Idempotency-Key header or equivalent is documented or modeled. Consistent with a
+    read-mostly API (31 of 33 resources read/search-only); the two writable resources
+    (Communication create, QuestionnaireResponse create/update) carry no documented
+    idempotency guarantee for retried creates.
+pagination:
+  style: FHIR Bundle
+  mechanism: >-
+    Search responses return a Bundle resource with `link` entries (rel: self/next/previous)
+    rather than page-number or cursor query parameters the client constructs itself; the client
+    follows the `next` link verbatim.
+  params: standard FHIR search parameters (_count, plus resource-specific search params)
+  evidence: components.schemas.Bundle in openapi/_original/meditech-fhir-openapi.yml
+field_expansion:
+  supported: fhir-standard
+  mechanism: >-
+    Not modeled explicitly in this repo's OpenAPI (only 10 operations captured), but US Core R4
+    servers conventionally support FHIR `_include`, `_revinclude`, and `_elements` search
+    parameters. Not independently confirmed live against MEDITECH's sandbox this pass --
+    recorded as fhir-standard expectation, not a verified MEDITECH behavior.
+metadata:
+  mechanism: FHIR `meta` element (versionId, lastUpdated, profile) on every resource, per US Core R4.
+request_tracing:
+  header: mtrestapi-requestid
+  evidence: >-
+    Observed live on EVERY response from both greenfield.meditech.com and
+    greenfield-prod-apis.meditech.com during this pass's probes (2026-08-14), e.g.
+    `mtrestapi-requestid: 8d145fdcea70d72706be8aa3a664bb40`. Also exposed via
+    access-control-expose-headers, meaning browser-based clients can read it. This is a real,
+    observed MEDITECH convention, not an assumption.
+  also_observed: traceparent (W3C Trace Context header), present on the same responses.
+versioning:
+  scheme: fhir-implementation-guide-version
+  see: lifecycle/meditech-lifecycle.yml
+error_envelope:
+  format: FHIR OperationOutcome (application/fhir+json)
+  see: errors/meditech-problem-types.yml
+  note: NOT RFC 9457 problem+json -- FHIR servers use their own resource-typed error shape.
+rate_limit_signaling:
+  headers_observed: none
+  policy: >-
+    Documented only as discretionary prose in the API Terms of Use ("MEDITECH sets and
+    enforces limits... in our sole discretion, without notice"); no X-RateLimit-*/RateLimit-*
+    response headers were observed on any live probe in this pass.
+  see: rate-limits/meditech-rate-limits.yml
+security_headers_observed:
+  headers:
+    x-content-type-options: nosniff
+    referrer-policy: no-referrer
+    permissions-policy: 'camera=(), microphone=(), geolocation=()'
+    strict-transport-security: 'max-age=31536000'
+    content-security-policy: "frame-ancestors 'none' (on .well-known/agent-card.json path specifically)"
+  note: >-
+    Observed live on greenfield.meditech.com and greenfield-prod-apis.meditech.com responses
+    during this pass, 2026-08-14. Recorded here since they are genuine cross-cutting behavior,
+    even though the pages that returned them were SPA-shell false positives for other checks.
