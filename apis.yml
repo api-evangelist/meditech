@@ -1,7 +1,7 @@
 aid: meditech
 name: MEDITECH
 type: Index
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 description: >-
   MEDITECH (Medical Information Technology, Inc.) is an electronic health record vendor serving
   community hospitals and health systems, primarily through its MEDITECH Expanse platform. Its
