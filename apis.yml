@@ -146,7 +146,6 @@ apis:
   - Healthcare
   - FHIR
   - HL7
-  image: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/image.png
   humanURL: https://ehr.meditech.com/ehr-solutions/greenfield-workspace
   baseURL: https://{facility}.meditech.com/fhir/r4
   properties:
@@ -192,7 +191,7 @@ apis:
   humanURL: https://greenfield.meditech.com/explorer/topic/welcome
   baseURL: https://{facility}.meditech.com/fhir/r4
   tags:
-  - Capabilities
+  - Capability
   tags_raw:
   - Capability
   properties:
