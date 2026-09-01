@@ -191,7 +191,7 @@ apis:
   humanURL: https://greenfield.meditech.com/explorer/topic/welcome
   baseURL: https://{facility}.meditech.com/fhir/r4
   tags:
-  - Capability
+  - Capabilities
   tags_raw:
   - Capability
   properties:
