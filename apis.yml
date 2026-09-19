@@ -229,6 +229,8 @@ apis:
   humanURL: https://greenfield.meditech.com/explorer/topic/welcome
   baseURL: https://{facility}.meditech.com/fhir/r4
   tags:
+  - Diagnostics
+  tags_raw:
   - Diagnostic
   properties:
   - type: OpenAPI
@@ -301,6 +303,8 @@ apis:
   humanURL: https://greenfield.meditech.com/explorer/topic/welcome
   baseURL: https://{facility}.meditech.com/fhir/r4
   tags:
+  - Patients
+  tags_raw:
   - Patient
   properties:
   - type: OpenAPI
