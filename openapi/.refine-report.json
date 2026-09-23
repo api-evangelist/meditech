@@ -1,14 +1,7 @@
 {
   "provider": "meditech",
   "sources": [
-    "meditech-allergy-api-openapi.yml",
-    "meditech-capability-api-openapi.yml",
-    "meditech-condition-api-openapi.yml",
-    "meditech-diagnostic-api-openapi.yml",
-    "meditech-encounter-api-openapi.yml",
-    "meditech-medication-api-openapi.yml",
-    "meditech-observation-api-openapi.yml",
-    "meditech-patient-api-openapi.yml"
+    "_original/meditech-fhir-openapi.yml"
   ],
   "outputs": [
     "meditech-allergy-api-openapi.yml",
@@ -23,6 +16,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "meditech-fhir-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "meditech-allergy-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-capability-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-condition-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-diagnostic-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-encounter-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-medication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-observation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "meditech-patient-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
