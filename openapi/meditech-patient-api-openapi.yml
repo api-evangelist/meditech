@@ -149,45 +149,6 @@ components:
           schema:
             $ref: '#/components/schemas/OperationOutcome'
   schemas:
-    Bundle:
-      type: object
-      description: FHIR Bundle resource
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - Bundle
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - searchset
-          - collection
-          - transaction
-          - batch
-          - history
-        total:
-          type: integer
-        link:
-          type: array
-          items:
-            type: object
-            properties:
-              relation:
-                type: string
-              url:
-                type: string
-        entry:
-          type: array
-          items:
-            type: object
-            properties:
-              fullUrl:
-                type: string
-              resource:
-                type: object
-                additionalProperties: true
     OperationOutcome:
       type: object
       properties:
@@ -351,6 +312,45 @@ components:
                           type: string
                         code:
                           type: string
+    Bundle:
+      type: object
+      description: FHIR Bundle resource
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - Bundle
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - searchset
+          - collection
+          - transaction
+          - batch
+          - history
+        total:
+          type: integer
+        link:
+          type: array
+          items:
+            type: object
+            properties:
+              relation:
+                type: string
+              url:
+                type: string
+        entry:
+          type: array
+          items:
+            type: object
+            properties:
+              fullUrl:
+                type: string
+              resource:
+                type: object
+                additionalProperties: true
   securitySchemes:
     SMART_OAuth2:
       type: oauth2
