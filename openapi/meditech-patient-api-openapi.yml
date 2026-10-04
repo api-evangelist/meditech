@@ -135,19 +135,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bundle'
 components:
-  responses:
-    NotFound:
-      description: Resource not found
-      content:
-        application/fhir+json:
-          schema:
-            $ref: '#/components/schemas/OperationOutcome'
-    Unauthorized:
-      description: SMART on FHIR authorization required
-      content:
-        application/fhir+json:
-          schema:
-            $ref: '#/components/schemas/OperationOutcome'
   schemas:
     Patient:
       type: object
@@ -289,6 +276,29 @@ components:
                           type: string
                         code:
                           type: string
+    OperationOutcome:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          enum:
+          - OperationOutcome
+        issue:
+          type: array
+          items:
+            type: object
+            properties:
+              severity:
+                type: string
+                enum:
+                - fatal
+                - error
+                - warning
+                - information
+              code:
+                type: string
+              diagnostics:
+                type: string
     Bundle:
       type: object
       description: FHIR Bundle resource
@@ -328,29 +338,19 @@ components:
               resource:
                 type: object
                 additionalProperties: true
-    OperationOutcome:
-      type: object
-      properties:
-        resourceType:
-          type: string
-          enum:
-          - OperationOutcome
-        issue:
-          type: array
-          items:
-            type: object
-            properties:
-              severity:
-                type: string
-                enum:
-                - fatal
-                - error
-                - warning
-                - information
-              code:
-                type: string
-              diagnostics:
-                type: string
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
+    Unauthorized:
+      description: SMART on FHIR authorization required
+      content:
+        application/fhir+json:
+          schema:
+            $ref: '#/components/schemas/OperationOutcome'
   securitySchemes:
     SMART_OAuth2:
       type: oauth2
