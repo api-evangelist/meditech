@@ -27,6 +27,13 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/meditech.p
 url: https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/apis.yml
 tags:
 - Company
+- Electronic Health Records
+- Healthcare
+- FHIR
+- HL7
+- Interoperability
+tags_raw:
+- Company
 - EHR
 - Healthcare
 - FHIR
@@ -142,6 +149,11 @@ apis:
 - aid: meditech:meditech-api
   name: MEDITECH Expanse FHIR API
   tags:
+  - Electronic Health Records
+  - Healthcare
+  - FHIR
+  - HL7
+  tags_raw:
   - EHR
   - Healthcare
   - FHIR
