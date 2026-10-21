@@ -54,3 +54,30 @@
     detected: '2026-10-18'
   status: not-a-workflow
   arazzo: null
+- slug: meditech-hl7-da-vinci-project
+  label: HL7 Da Vinci Project
+  partner_name: HL7 Da Vinci Project
+  category: Payer / provider FHIR accelerator (CRD, DTR, PAS, PDex)
+  type: register
+  channel: standard-directory
+  evidence: https://www.hl7.org/about/davinci/members.cfm
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: HL7 Da Vinci Project members (confluence.hl7.org DVP)
+    spec_file: null
+    standard: HL7 Da Vinci (payer FHIR implementation guides)
+    role: member
+    registered_name: MEDITECH
+    matched_domain: meditech.com
+    matched_by: domain
+    market_fit: own apis.yml tags carry a health administration / health IT term
+    detected_by: sweep-payer-interop-caqh-core.py
+    detected: '2026-10-21'
+    identity: wikidata Q6715304 'MEDITECH' P856 https://ehr.meditech.com/
+    identity_source: wikidata P856 (labelled provenance step; Kin 2026-10-15 decision 1)
+    org_type: Vendor
+    founder: false
+    signal_note: membership = participation; member level in partner_tier
+  status: not-a-workflow
+  arazzo: null

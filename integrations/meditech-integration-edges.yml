@@ -47,12 +47,49 @@ edges:
     detected: '2026-10-18'
   detected_by: sweep-medtech.py
   first_seen: '2026-10-18'
+- partner_name: HL7 Da Vinci Project
+  partner: null
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.hl7.org/about/davinci/members.cfm
+  category: Payer / provider FHIR accelerator (CRD, DTR, PAS, PDex)
+  contract_reference:
+    register: HL7 Da Vinci Project members (confluence.hl7.org DVP)
+    spec_file: null
+    standard: HL7 Da Vinci (payer FHIR implementation guides)
+    role: member
+    registered_name: MEDITECH
+    matched_domain: meditech.com
+    matched_by: domain
+    market_fit: own apis.yml tags carry a health administration / health IT term
+    detected_by: sweep-payer-interop-caqh-core.py
+    detected: '2026-10-21'
+    identity: wikidata Q6715304 'MEDITECH' P856 https://ehr.meditech.com/
+    identity_source: wikidata P856 (labelled provenance step; Kin 2026-10-15 decision 1)
+    org_type: Vendor
+    founder: false
+    signal_note: membership = participation; member level in partner_tier
+  detected_by: sweep-payer-interop-caqh-core.py
+  first_seen: '2026-10-21'
+  partner_tier: Principal
 generated: '2026-10-12'
 method: searched
 checked:
 - https://lantern.healthit.gov/api/daily/download
 - https://www.commonwellalliance.org/wp-json/wp/v2/pages?slug=commonwell-members&_fields=id,link,content
 - https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-enabled-medical-devices
+- https://confluence.hl7.org/display/DVP/Da+Vinci+Project+Members
+- https://data.cms.gov/provider-data/dataset/6jpm-sxkc
+- https://members.wedi.org/website-organization-directory/FindStartsWith?term=%23%21
+- https://www.caqh.org/core/certified-entities
+- https://www.caqh.org/core/core-certification
+- https://www.cms.gov/priorities/key-initiatives/burden-reduction/interoperability
+- https://www.dataspring.com/core/core-certified-organizations-pending-and-current
+- https://www.hl7.org/about/davinci/members.cfm
+- https://x12.org/membership/list-of-members
 source:
 - https://lantern.healthit.gov/api/daily/download
 - https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-enabled-medical-devices
