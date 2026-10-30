@@ -1,4 +1,4 @@
-# MEDITECH (meditech)
+# MEDITECH
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,174 +66,183 @@
 
 MEDITECH (Medical Information Technology, Inc.) is an electronic health record vendor serving community hospitals and health systems, primarily through its MEDITECH Expanse platform. Its API program is delivered through the Greenfield Workspace — a registration-gated developer environment where approved app developers get interactive documentation and a sandbox to execute APIs against a real MEDITECH EHR. Published surfaces are US Core FHIR R4 (view-only patient-facing data, USCDI v1, DSTU2/R4 compatible) and FHIR Scheduling APIs. MEDITECH also operates Traverse Exchange, its national data exchange network and TEFCA on-ramp, connecting 700+ facilities across 41 US states plus Canadian deployments.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/apis.yml)
+**Areas:** Company · Electronic Health Records · Healthcare · FHIR · HL7 · Interoperability
 
-> ## ⚠️ Read this before building on this repo
->
-> **The OpenAPI definitions here are API Evangelist models of US Core FHIR R4 — not MEDITECH-published contracts.**
->
-> MEDITECH does not publish an OpenAPI. Everything in `openapi/` was modeled from the FHIR R4
-> standard MEDITECH states it supports, and the `authentication/`, `scopes/`, `agentic-access/`,
-> and `collections/` artifacts are derived from those models — so they inherit the same provenance.
->
-> **The authoritative reference is the Greenfield API Explorer** →
-> **[greenfield.meditech.com/explorer/topic/welcome](https://greenfield.meditech.com/explorer/topic/welcome)**
->
-> Reconcile everything in this repo against it. The sections that matter most:
->
-> | Section | URL |
-> |---|---|
-> | Welcome / getting started | [`/explorer/topic/welcome`](https://greenfield.meditech.com/explorer/topic/welcome) |
-> | Patient health data | [`/explorer/topic/patient-health-data`](https://greenfield.meditech.com/explorer/topic/patient-health-data) |
-> | API reference | [`/explorer/api`](https://greenfield.meditech.com/explorer/api) |
-> | **Endpoint directory** | [`/explorer/endpoints`](https://greenfield.meditech.com/explorer/endpoints) |
-> | **Scope list** | [`/explorer/scope`](https://greenfield.meditech.com/explorer/scope) |
-> | Authorization | [`/explorer/authorization`](https://greenfield.meditech.com/explorer/authorization) |
-> | Status codes | [`/explorer/status-codes`](https://greenfield.meditech.com/explorer/status-codes) |
->
-> *(Route list confirmed from the Explorer's shipped Angular bundle, not guessed.)*
->
-> Practical consequences:
->
-> - **Service base URLs are per-customer.** The `https://{facility}.meditech.com/fhir/r4` template
->   reflects MEDITECH's deployment model. Real endpoints are issued per organization.
-> - **OAuth endpoints are placeholders.** Read each deployment's `.well-known/smart-configuration`.
-> - **Operation coverage is unverified.** FHIR compartment searches (`/Patient/{id}/Observation`)
->   and `$everything` are optional server capabilities. Check the facility's
->   `CapabilityStatement` at `/metadata` before binding anything to them.
-> - **PHI applies.** Every operation modeled here reads protected health data under HIPAA.
->
-> **Why we couldn't just read the Explorer and fix this automatically:** it is an Angular
-> single-page app that renders entirely client-side, and `greenfield.meditech.com` serves
-> `robots.txt` with `Disallow: /`. The docs are open to a human with a browser but invisible to
-> crawlers, indexes, and any AI agent that fetches URLs or respects robots. That's a
-> *machine-discoverability* problem, not an access problem — and it's precisely why a derived
-> scaffold ended up standing in for the real contract here.
->
-> Register for sandbox access (executing calls against a real EHR does require approval) at
-> [ehr.meditech.com/ehr-solutions/greenfield-workspace](https://ehr.meditech.com/ehr-solutions/greenfield-workspace).
->
-> *Corrections and evidence-backed PRs welcome — especially transcriptions of
-> `/explorer/endpoints` and `/explorer/scope`, which should supersede the derived artifacts here.*
+## MEDITECH on APIs.io
 
-## ⛔ There is no write access
+Everything profiled for MEDITECH is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/meditech/](https://apis.io/providers/meditech/)** — or go straight to one of the APIs or properties below.
 
-**As of 2026-07-27, every API MEDITECH exposes through Greenfield Workspace is read-only.**
-There is no supported public path to create a patient, book an appointment, or reschedule one.
-If you applied for API access and were granted read-only, that is the expected outcome — not a
-sign you applied to the wrong program.
+### APIs (9)
 
-| Surface | Access | Workflow | Available to |
-|---|---|---|---|
-| [FHIR Patient Access — DSTU2](https://greenfield.meditech.com/explorer/topic/patient-health-data) | **Read-only** | Patient-facing | All customers |
-| [FHIR Patient Access — R4 / US Core](https://greenfield.meditech.com/explorer/topic/USCore-patient-health-data) | **Read-only** | Patient-facing | All customers |
-| [HL7v2 Interfaces](https://ehr.meditech.com/hl7-outbound-list-for-greenfield) | **Read-only** | **Outbound only** (ADT, labs, meds, orders) | All customers |
-| FHIR Scheduling APIs | *Coming soon* | — | **Expanse customers only** |
+- [MEDITECH Expanse FHIR API](https://apis.io/apis/meditech/meditech-api/) — MEDITECH's FHIR API surface for Expanse, exposed to approved developers through the Greenfield Workspace. US Core FHIR R4 provides view-only access to…
+- [meditech Allergy API](https://apis.io/apis/meditech/meditech-allergy-api/) — Allergy and intolerance records
+- [meditech Capability API](https://apis.io/apis/meditech/meditech-capability-api/) — FHIR server capability
+- [meditech Condition API](https://apis.io/apis/meditech/meditech-condition-api/) — Problem list and diagnoses
+- [meditech Diagnostic API](https://apis.io/apis/meditech/meditech-diagnostic-api/) — Diagnostic reports (lab, radiology, pathology)
+- [meditech Encounter API](https://apis.io/apis/meditech/meditech-encounter-api/) — Clinical encounters and visits
+- [meditech Medication API](https://apis.io/apis/meditech/meditech-medication-api/) — Medication requests and prescriptions
+- [meditech Observation API](https://apis.io/apis/meditech/meditech-observation-api/) — Vital signs and laboratory results
+- [meditech Patient API](https://apis.io/apis/meditech/meditech-patient-api/) — US Core Patient resources
 
-Scheduling write-back **does** exist in Expanse — MEDITECH markets Argo-Scheduling (FHIR STU3:
-retrieve slots, book visits, manage provider availability), and partners like Luma Health have
-shipped against it. But that is delivered through **customer-sponsored or formal-partner
-integration at the hospital**, not through self-serve Greenfield access. Greenfield's own
-resources page still lists FHIR Scheduling as "coming soon."
+### Published properties
 
-Practical read: if your use case is writes, the route is a MEDITECH customer sponsoring the
-integration or a partner agreement — not the developer program.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Access
+#### MCP servers (1)
 
-| | |
-|---|---|
-| **Pricing** | Unknown — none published |
-| **Onboarding** | Registration request (reviewed by MEDITECH), not self-serve |
-| **Public docs** | Yes, but machine-invisible — [Greenfield API Explorer](https://greenfield.meditech.com/explorer/topic/welcome) is client-rendered and robots-disallowed |
-| **Sandbox** | Approval required (Greenfield Workspace) |
-| **Try now** | No |
+Model Context Protocol servers that expose the API to agents.
 
-## Timestamps
+- [meditech-mcp.yml](https://apis.io/servers/meditech/meditech-mcp-yml/)
 
-- **Created:** 2026-05-04
-- **Modified:** 2026-07-27
-- **Provenance reviewed:** 2026-07-27
+#### Agentic access (1)
 
-## APIs
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### MEDITECH Expanse FHIR API
+- [Meditech Agentic Access](https://apis.io/agentic-access/meditech/meditech-agentic-access/)
 
-MEDITECH's FHIR API surface for Expanse, exposed to approved developers through the Greenfield Workspace. US Core FHIR R4 provides view-only access to patient-facing data after the patient authorizes the requesting app (USCDI v1, DSTU2/R4 compatible, patient workflows only). Separate FHIR Scheduling APIs support user and patient workflows for Expanse customers. Service base URLs are issued per customer facility.
+#### JSON Schema (1)
 
-- **Human URL:** [https://ehr.meditech.com/ehr-solutions/greenfield-workspace](https://ehr.meditech.com/ehr-solutions/greenfield-workspace)
-- **Base URL:** `https://{facility}.meditech.com/fhir/r4` *(template — issued per organization)*
+The data models the API reads and writes.
 
-#### Tags
+- [Meditech FHIR R4 Patient](https://apis.io/schemas/meditech/meditech-patient/)
 
-- EHR
-- Healthcare
-- FHIR
-- HL7
+#### JSON-LD (1)
 
-#### Properties
+Linked-data contexts for the provider's vocabulary.
 
-- [Documentation](https://greenfield.meditech.com/explorer/topic/welcome)
-- [Endpoints](https://greenfield.meditech.com/explorer/endpoints)
-- [Scopes](https://greenfield.meditech.com/explorer/scope)
-- [Authorization](https://greenfield.meditech.com/explorer/authorization)
-- [Status Codes](https://greenfield.meditech.com/explorer/status-codes)
-- [Sign Up](https://ehr.meditech.com/ehr-solutions/greenfield-workspace)
+- [Meditech Context](https://apis.io/jsonld/meditech/meditech-context/)
 
-### Resource APIs *(AE-derived, one per FHIR resource)*
+#### Collections (9)
 
-Split by tag from the source model in `openapi/_original/meditech-fhir-openapi.yml`. **All read
-operations** — consistent with MEDITECH's actual read-only surface. No scheduling API is modeled
-here because MEDITECH does not yet expose one through Greenfield.
+Postman and Open Collection request collections.
 
-| API | Covers | OpenAPI |
-|---|---|---|
-| Allergy | Allergy and intolerance records | [`meditech-allergy-api-openapi.yml`](openapi/meditech-allergy-api-openapi.yml) |
-| Capability | FHIR server capability statement | [`meditech-capability-api-openapi.yml`](openapi/meditech-capability-api-openapi.yml) |
-| Condition | Problem list and diagnoses | [`meditech-condition-api-openapi.yml`](openapi/meditech-condition-api-openapi.yml) |
-| Diagnostic | Diagnostic reports (lab, radiology, pathology) | [`meditech-diagnostic-api-openapi.yml`](openapi/meditech-diagnostic-api-openapi.yml) |
-| Encounter | Clinical encounters and visits | [`meditech-encounter-api-openapi.yml`](openapi/meditech-encounter-api-openapi.yml) |
-| Medication | Medication requests and prescriptions | [`meditech-medication-api-openapi.yml`](openapi/meditech-medication-api-openapi.yml) |
-| Observation | Vital signs and laboratory results | [`meditech-observation-api-openapi.yml`](openapi/meditech-observation-api-openapi.yml) |
-| Patient | US Core Patient resources | [`meditech-patient-api-openapi.yml`](openapi/meditech-patient-api-openapi.yml) |
+- [Meditech Expanse FHIR R4 Allergy API](https://apis.io/collections/meditech/open-meditech-allergy-api/)
+- [Meditech Expanse FHIR R4 Allergy Capability API](https://apis.io/collections/meditech/open-meditech-capability-api/)
+- [Meditech Expanse FHIR R4 Allergy Condition API](https://apis.io/collections/meditech/open-meditech-condition-api/)
+- [Meditech Expanse FHIR R4 Allergy Diagnostic API](https://apis.io/collections/meditech/open-meditech-diagnostic-api/)
+- [Meditech Expanse FHIR R4 Allergy Encounter API](https://apis.io/collections/meditech/open-meditech-encounter-api/)
+- [Meditech Expanse FHIR R4 API](https://apis.io/collections/meditech/open-meditech-fhir/)
+- [Meditech Expanse FHIR R4 Allergy Medication API](https://apis.io/collections/meditech/open-meditech-medication-api/)
+- [Meditech Expanse FHIR R4 Allergy Observation API](https://apis.io/collections/meditech/open-meditech-observation-api/)
+- [Meditech Expanse FHIR R4 Allergy Patient API](https://apis.io/collections/meditech/open-meditech-patient-api/)
 
-## Common Properties
+#### Overlays (8)
 
-- [LinkedIn](https://www.linkedin.com/company/meditech)
-- [Portal](https://greenfield.meditech.com/) — Greenfield Workspace
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Meditech Allergy Api Overlay](https://apis.io/overlays/meditech/meditech-allergy-api-overlay/)
+- [Meditech Capability Api Overlay](https://apis.io/overlays/meditech/meditech-capability-api-overlay/)
+- [Meditech Condition Api Overlay](https://apis.io/overlays/meditech/meditech-condition-api-overlay/)
+- [Meditech Diagnostic Api Overlay](https://apis.io/overlays/meditech/meditech-diagnostic-api-overlay/)
+- [Meditech Encounter Api Overlay](https://apis.io/overlays/meditech/meditech-encounter-api-overlay/)
+- [Meditech Medication Api Overlay](https://apis.io/overlays/meditech/meditech-medication-api-overlay/)
+- [Meditech Observation Api Overlay](https://apis.io/overlays/meditech/meditech-observation-api-overlay/)
+- [Meditech Patient Api Overlay](https://apis.io/overlays/meditech/meditech-patient-api-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [MEDITECH — jsonschema rules](https://apis.io/rules/meditech/meditech-jsonschema-spectral-rules/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Meditech Authentication](https://apis.io/security/meditech/meditech-authentication/)
+- [Meditech Domain Security](https://apis.io/security/meditech/meditech-domain-security/)
+- [Meditech Trust Center](https://apis.io/security/meditech/meditech-trust-center/)
+- [Meditech Vulnerability Disclosure](https://apis.io/security/meditech/meditech-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Meditech Scopes](https://apis.io/scopes/meditech/meditech-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Meditech Plans Pricing](https://apis.io/plans/meditech/meditech-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Meditech Rate Limits](https://apis.io/rate-limits/meditech/meditech-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Meditech Finops](https://apis.io/finops/meditech/meditech-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.meditech.com/)
-- [Documentation](https://greenfield.meditech.com/explorer/topic/welcome) — Greenfield API Explorer
-- [API Reference](https://greenfield.meditech.com/explorer/api)
-- [Endpoints](https://greenfield.meditech.com/explorer/endpoints)
-- [Scopes](https://greenfield.meditech.com/explorer/scope)
-- [Authorization](https://greenfield.meditech.com/explorer/authorization)
-- [Status Codes](https://greenfield.meditech.com/explorer/status-codes)
-- [Sign Up](https://ehr.meditech.com/ehr-solutions/greenfield-workspace)
-- [Getting Started](https://ehr.meditech.com/ehr-solutions/how-to-work-in-the-greenfield-workspace)
-- [Resources](https://ehr.meditech.com/ehr-solutions/greenfield-workspace-resources)
-- [Interoperability](https://ehr.meditech.com/ehr-solutions/meditech-interoperability) — Traverse Exchange / TEFCA
-- [Blog](https://blog.meditech.com/)
+- [Documentation](https://greenfield.meditech.com/explorer/topic/welcome)
+- [Getting started](https://ehr.meditech.com/ehr-solutions/how-to-work-in-the-greenfield-workspace)
+- [API reference](https://greenfield.meditech.com/explorer/api)
+- [Sign up](https://ehr.meditech.com/ehr-solutions/greenfield-workspace)
 - [Support](https://ehr.meditech.com/contact)
-- [Privacy Policy](https://ehr.meditech.com/privacy-policy)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/openapi/_original/meditech-fhir-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [JSON Schema](https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-schema/meditech-patient-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD Context](https://raw.githubusercontent.com/api-evangelist/meditech/refs/heads/main/json-ld/meditech-context.jsonld)
-- [Postman Collection](collections/meditech-fhir.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/meditech-fhir.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Blog](https://blog.meditech.com/)
+- [Terms of service](https://home.meditech.com/en/d/restapiresources/pages/apiterms.htm)
+- [Privacy policy](https://ehr.meditech.com/privacy-policy)
 
-## Not published by MEDITECH
+## API Evangelist rating
 
-Honestly absent — recorded here so their absence is not mistaken for an oversight:
+**Kin Score 43.6** — developing · rubric 0.25.0 · scored 2026-10-23
 
-- No public API pricing or plan tiers
-- No published rate limits or rate-limit response headers
-- No machine-readable OpenAPI, capability statement, or downloadable spec
-- No `security.txt`, bug bounty, or trust center
-- No public API changelog or status page
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 27.6 |
+| Contract governance | 9.8 |
+| Operational transparency | 15.8 |
+| Developer ergonomics | 57.7 |
+| Access clarity | 50.0 |
 
-The endpoint directory and scope list **do** exist — at [`/explorer/endpoints`](https://greenfield.meditech.com/explorer/endpoints)
-and [`/explorer/scope`](https://greenfield.meditech.com/explorer/scope) — but only as rendered
-HTML behind a robots-disallowed SPA, so nothing can consume them programmatically.
+**Agent readiness 32.3** — agent-ready
 
-Earlier scaffold artifacts that *asserted* pricing, plan tiers, and rate limits have been
-quarantined in [`_scaffold/`](_scaffold/) — see the note there.
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | na |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 47.7** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/meditech/](https://apis.io/providers/meditech/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for MEDITECH: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/meditech/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
