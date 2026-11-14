@@ -20,6 +20,12 @@ artifacts:
   authentication/meditech-greenfield-oauth.yml:
     method: harvested
     evidence: declared in the artifact
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/meditech-changelog.yml:
     method: searched
     evidence: declared in the artifact
@@ -86,8 +92,14 @@ artifacts:
   conventions/meditech-conventions.yml:
     method: derived
     evidence: declared in the artifact
+  data-license/meditech-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/meditech-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  eligibility/meditech-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/meditech-problem-types.yml:
     method: derived
@@ -102,6 +114,9 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   heartbeat/2026-11-06.yml:
+    method: unknown
+    evidence: no authorship recorded
+  heartbeat/2026-11-13.yml:
     method: unknown
     evidence: no authorship recorded
   integrations/_index.yml:
@@ -119,7 +134,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -183,6 +198,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-02T082323.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/meditech-lifecycle.yml:
@@ -252,6 +270,9 @@ artifacts:
   plans/meditech-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
+  privacy/meditech-privacy-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
   rate-limits/meditech-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
@@ -281,6 +302,9 @@ artifacts:
     evidence: declared in the artifact
   skills/meditech-patient-record-search.md:
     method: generated
+    evidence: declared in the artifact
+  terms/meditech-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   well-known/meditech-greenfield-openid-configuration.json:
     method: unknown
